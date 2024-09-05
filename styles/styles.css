@@ -1,0 +1,100 @@
+/* Basic CSS styling for the site other than Bootstrap*/
+
+/* General styling */
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.form_move {
+    padding: 1em;
+    margin: 1em 2em;
+    border: 1px solid black;
+    border-radius: 1em;
+}
+
+@keyframes fading {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.eye {
+    color: black;
+    float: right;
+    margin-top: -2em;
+    margin-right: 1em;
+    cursor: pointer;
+    z-index: 1;
+    position: relative;
+}
+
+#home_hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/bus.jpeg);
+}
+
+.hero {
+    height: 52%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+
+.hero_text {
+    text-align: center;
+    transform: translate(-50%, -200%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: white;
+  }
+
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #a8b2bb;
+    text-align: center;
+    padding: 0.5em;
+    margin-top: 3em;
+}
+
+.container {
+    margin-top: 2em;
+    animation-name: fading;
+    animation-duration: 1.5s
+}
+
+/* Mobile */
+@media (max-width: 516px) {
+    .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        background-color: #a8b2bb;
+        text-align: center;
+        padding: 0.5em;
+    }
+}
+
+@media (min-width: 517px) and (max-width: 767px){
+    .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        background-color: #a8b2bb;
+        text-align: center;
+        padding: 0.5em;
+    }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+}
