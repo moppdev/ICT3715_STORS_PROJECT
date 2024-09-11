@@ -36,6 +36,9 @@ html, body {
 #home_hero {
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/bus.jpeg);
 }
+#learner_hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/learners.jpg);
+}
 
 .hero {
     height: 52%;

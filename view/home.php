@@ -21,6 +21,11 @@
                         <h2>Welcome, <?php echo $_SESSION["user_info"]["name"] . " " .  $_SESSION["user_info"]["surname"] ?></h2>
 
                         <!-- Table of learners here -->
+                        <table>
+                            <?php for ($i = 0; $i < count($learners); $i++): ?>
+                                <p><?php echo $learners[$i]["name"]?></p>
+                            <?php endfor; ?>
+                        </table>
                     <?php else: ?>
                         <h2>Welcome, Administrator <?php echo $_SESSION["user_info"]["initials"] . " " . $_SESSION["user_info"]["surname"] ?></h2>
 
@@ -37,8 +42,8 @@
 
                         <h2>How It Works</h2>
                         <ol>
-                            <li><strong>Register Your Child</strong>: <a href="#">Sign up through our user-friendly portal.</a></li>
-                            <li><strong>Apply For Transport</strong>: <a href="#">Submit an application for transport. If a spot becomes available, your child will be automatically allocated a seat from the waiting list.</a></li>
+                            <li><strong>Register Your Child</strong>: Login through our user-friendly portal and go to Learner Hub.</li>
+                            <li><strong>Apply For Transport</strong>: Submit an application for transport. If a spot becomes available, your child will be automatically allocated a seat from the waiting list.</li>
                             <li><strong>Enjoy Safe Transport:</strong> Your child travels in a well-maintained, secure bus to and from school.</li>
                         </ol>
                 <?php endif; ?>

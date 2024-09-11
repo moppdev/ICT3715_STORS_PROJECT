@@ -7,6 +7,7 @@
     include "model/database.php";
     include "model/login_db.php";
     include "model/parent_admin_db.php";
+    include "model/learners_db.php";
 
     // Get the value of action to determine what happens in the website
     $action = filter_input(INPUT_POST, "action");
@@ -24,17 +25,22 @@
     {
         if (isset($_SESSION["user_id"]))
         {
-            $user_info = "";
+            $learners = get_parent_learners();
+            if ($_SESSION["role"] == "admins")
+            {
+                $learners = get_all_learners();
+            }
         }
     }
 
     // Check the value of action
     switch ($action) {
         case "parent_login":
-            $p_email = filter_input(INPUT_POST, "email");
+             $p_email = filter_input(INPUT_POST, "email");
             $p_pass = filter_input(INPUT_POST, "password");
-    
+            
             $p_result = parent_login($p_email, $p_pass);
+            
             if ($p_result) {
                 $_SESSION["user_id"] = $p_result["id"];
                 $_SESSION["role"] = "parents";
@@ -42,11 +48,20 @@
                 session_regenerate_id();
                 header("Location: home.php");
                 exit();
-            }
-            else
-            {
+            } else {
                 $error = "Please check your credentials and try again.";
             }
+        break;
+        case "register_learner":
+            $name = filter_input(INPUT_POST, "name");
+            $surname = filter_input(INPUT_POST, "surname");
+            $cell_num = filter_input(INPUT_POST, "cell_num");
+            $grade = filter_input(INPUT_POST, "grade");
+
+            create_new_learner($name, $surname, $cell_num, $grade);
+            create_new_relation();
+
+            exit();
         break;
         case "admin_login":
             $a_email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
@@ -67,7 +82,6 @@
                 $error = "Please check your administrative credentials. Access Denied.";
             }
         break;
-    
         case "sign_out":
             $_SESSION = array();
             session_destroy();
