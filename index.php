@@ -63,6 +63,14 @@
 
             exit();
         break;
+        case "edit_learner":
+
+        break;
+        case "remove_learner":
+            $id = filter_input(INPUT_POST, "selected_learner");
+
+            remove_learner($id);
+        break;
         case "admin_login":
             $a_email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
             $a_pass = filter_input(INPUT_POST, "password");
@@ -81,6 +89,9 @@
             {
                 $error = "Please check your administrative credentials. Access Denied.";
             }
+        break;
+        case "get_learners":
+            echo json_encode($learners);
         break;
         case "sign_out":
             $_SESSION = array();

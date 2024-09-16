@@ -64,4 +64,19 @@
         $statement->closeCursor();
     }
 
+    // function to edit a learner
+    function edit_learner($learner_id, $name, $surname, $grade, $cell_num)
+    {
+        global $db;
+        $query = "UPDATE learners SET name = :name, surname = :surname, grade = :grade, cell_num = :cell_num WHERE id = :learner_id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(":learner_id", $learner_id);
+        $statement->bindValue(":name", $name);
+        $statement->bindValue(":surname", $surname);
+        $statement->bindValue(":grade", $grade);
+        $statement->bindValue(":cell_num", $cell_num);
+        $statement->execute();
+        $statement->closeCursor();
+    }
+
 ?>

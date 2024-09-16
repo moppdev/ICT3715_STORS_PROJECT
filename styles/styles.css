@@ -74,6 +74,10 @@ html, body {
     animation-duration: 1.5s
 }
 
+#edit_learner {
+    display: none;
+}
+
 /* Mobile */
 @media (max-width: 516px) {
     .footer {

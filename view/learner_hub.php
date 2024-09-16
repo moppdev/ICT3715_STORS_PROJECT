@@ -29,6 +29,9 @@
                 <h2 id="title">Register a Learner</h2>  
 
                 <!-- fragments of the page -->
+                 <div class="mb-3" id="subtitle">
+                    Fill in the form below to register your child on the system!
+                 </div>
 
                 <!-- fragment where a new learner can be registered by a parent -->
                 <div class="learner_section" id="register">
@@ -53,6 +56,7 @@
                         <div class="mb-3">
                             <label for="grade">Grade:</label>
                             <select required name="grade" class="form-select">
+                                <option value="" disabled selected>Select a grade</option>
                                 <option value="8">8</option>
                                 <option value="9">9</option>
                                 <option value="10">10</option>
@@ -70,7 +74,7 @@
                     <div class="mb-3">
                         <label>Select a learner's details you would like to change:</label>
                         <select name="selected_learner">
-                            <option selected value=""></option>
+                            <option value="" disabled selected>Select a learner</option>
                             <?php for ($i = 0; $i < count($learners); $i++): ?>
                                 <option value="<?php echo $learners[$i]["id"] ?>"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></option>
                             <?php endfor; ?>
@@ -83,22 +87,23 @@
 
                         <div class="mb-3">
                             <label for="name">Name:</label>
-                            <input name="name" required type="text" class="form-control"/>
+                            <input name="e_name" required type="text" class="form-control"/>
                         </div>
 
                         <div class="mb-3">
                             <label for="surname">Surname:</label>
-                            <input name="surname" required type="text" class="form-control"/>
+                            <input name="e_surname" required type="text" class="form-control"/>
                         </div>
 
                         <div class="mb-3">
                             <label for="cell_num">Cellphone:</label>
-                            <input name="cell_num" required type="text" class="form-control"/>
+                            <input name="e_cell_num" required type="text" class="form-control"/>
                         </div>
 
                         <div class="mb-3">
                             <label for="grade">Grade:</label>
-                            <select required name="grade" class="form-select">
+                            <select required name="e_grade" class="form-select">
+                                <option value="" disabled selected>Select a grade</option>
                                 <option value="8">8</option>
                                 <option value="9">9</option>
                                 <option value="10">10</option>
@@ -113,13 +118,13 @@
 
                 <!-- fragment where a parent can remove a learner related to them from the system -->
                 <div class="learner_section" id="remove">
-                    <form method="POST" id="register_learner" class="form_move text-bg-primary">
+                    <form method="POST" id="remove_learner" class="form_move text-bg-primary">
                         <input hidden name="action" value="remove_learner"/>
 
                         <div class="mb-3">
                             <label>Select a learner you would like to remove:</label>
                             <select name="selected_learner">
-                                <option selected value=""></option>
+                                <option disabled selected value="">Select a learner</option>
                                 <?php for ($i = 0; $i < count($learners); $i++): ?>
                                     <option value="<?php echo $learners[$i]["id"] ?>"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></option>
                                 <?php endfor; ?>

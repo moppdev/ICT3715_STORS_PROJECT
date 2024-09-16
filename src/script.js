@@ -5,12 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
     passwordToggle();
     translateHeroTextForMobile();
     learnerHubSPAFunction();
+    learnerSelect();
+    checkPhoneNum();
 
 });
 
 ////// functions //////
 
-// password toggle
+// password visibility toggle
 function passwordToggle()
 {
      // Get the toggler itself
@@ -95,6 +97,7 @@ function learnerHubSPAFunction()
         const register = document.getElementById("register");
         const edit = document.getElementById("edit");
         const remove = document.getElementById("remove");
+        const subtitle = document.getElementById("subtitle");
 
         // Initial display
         register.style.display = "block";
@@ -110,6 +113,7 @@ function learnerHubSPAFunction()
             register.style.display = "block";
             edit.style.display = "none";
             remove.style.display = "none";
+            subtitle.textContent = "Fill in the form below to register your child on the system!";
         });
         editBtn.addEventListener("click", () => {
             title.textContent = "Edit a Learner's Details";
@@ -119,6 +123,7 @@ function learnerHubSPAFunction()
             register.style.display = "none";
             edit.style.display = "block";
             remove.style.display = "none";
+            subtitle.textContent = "Edit a learner's details by completing the form below. The fields are enabled as you hover your cursor/pointer over them.";
         });
         removeBtn.addEventListener("click", () => {
             title.textContent = "Remove a Learner";
@@ -128,6 +133,120 @@ function learnerHubSPAFunction()
             register.style.display = "none";
             edit.style.display = "none";
             remove.style.display = "block";
+            subtitle.textContent = "Remove a learner from the system by completing the form below.";
         });
     }
+}
+
+// function that prevents users from using the edit learners form until
+// they select a learner
+function learnerSelect()
+{
+    let learners;
+
+    // get the select element where learners are selected
+    const options = document.getElementsByName("selected_learner")[0];
+
+    // Get the information of the learners
+    fetch("../index.php?action=get_learners")
+    .then(response => (response.json()))
+    .then(data => (learners = data))
+    .catch(error => console.log(error));
+
+    // Check for when the value of options changes
+    options.addEventListener("change", () => {
+        const learnerInfo = learners[options.selectedIndex - 1];
+        const edit_learner = document.getElementById("edit_learner");
+
+        // if the form exists
+        if (edit_learner)
+        {
+            // if the form is not displaying
+            if (edit_learner.style.display = "none")
+            {
+                // show the form and get access to its elements
+                edit_learner.style.display = "block";
+                let name = document.getElementsByName("e_name")[0];
+                let surname = document.getElementsByName("e_surname")[0];
+                let cell_num = document.getElementsByName("e_cell_num")[0];
+                let grade = document.getElementsByName("e_grade")[0];
+                let id = document.getElementsByName("l_id")[0];
+
+                // change the value of the elements to the selected learner's information
+                name.value = learnerInfo["name"];
+                surname.value= learnerInfo["surname"];
+                cell_num.value = learnerInfo["cell_num"];
+                grade.value = learnerInfo["grade"];
+                id.value = learnerInfo["id"];
+
+                 // Add events to the form controls, so when they're hovered over, they are reenabled and vice versa
+                editFormEvents(name, surname, grade, cell_num);
+
+                // Disable the form controls
+                name.disabled = true;
+                surname.disabled = true;
+                grade.disabled = true;
+                cell_num.disabled = true;
+            }
+        }
+    });
+
+    function editFormEvents(name, surname, grade, cell_num) {
+        name.addEventListener("pointerover", () => {
+            name.disabled = false;
+        });
+        name.addEventListener("pointerout", () => {
+            name.disabled = true;
+        });
+        name.addEventListener("touchstart", () => {
+            name.disabled = true;
+        });
+        name.addEventListener("touchend", () => {
+            name.disabled = false;
+        });
+
+        surname.addEventListener("pointerover", () => {
+            surname.disabled = false;
+        });
+        surname.addEventListener("pointerout", () => {
+            surname.disabled = true;
+        });
+        surname.addEventListener("touchend", () => {
+            surname.disabled = false;
+        });
+        surname.addEventListener("touchstart", () => {
+            surname.disabled = true;
+        });
+
+        grade.addEventListener("pointerover", () => {
+            grade.disabled = false;
+        });
+        grade.addEventListener("pointerout", () => {
+            grade.disabled = true;
+        });
+        grade.addEventListener("touchend", () => {
+            grade.disabled = false;
+        });
+        grade.addEventListener("touchstart", () => {
+            grade.disabled = true;
+        });
+
+        cell_num.addEventListener("pointerover", () => {
+            cell_num.disabled = false;
+        });
+        cell_num.addEventListener("pointerout", () => {
+            cell_num.disabled = true;
+        });
+        cell_num.addEventListener("touchend", () => {
+            cell_num.disabled = false;
+        });
+        cell_num.addEventListener("touchstart", () => {
+            cell_num.disabled = true;
+        });
+    }
+}
+
+function checkPhoneNum()
+{
+    return 0;
 }
