@@ -65,7 +65,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-warning">Register New Learner</button>
+                        <button type="submit" class="btn btn-warning" name="registerBtn">Register New Learner</button>
                     </form>
                 </div>
 
@@ -112,7 +112,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-warning">Edit Learner's Details</button>
+                        <button type="submit" class="btn btn-warning" name="editBtn">Edit Learner's Details</button>
                     </form>
                 </div>
 
@@ -131,7 +131,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-danger">Remove Learner</button>
+                        <button type="submit" class="btn btn-danger" name="removeBtn">Remove Learner</button>
                     </form>
                 </div>
             </main> 

@@ -60,16 +60,28 @@
 
             create_new_learner($name, $surname, $cell_num, $grade);
             create_new_relation();
+            header("Location: home.php");
 
             exit();
         break;
         case "edit_learner":
+            $id = filter_input(INPUT_POST, "l_id");
+            $e_name = filter_input(INPUT_POST, "e_name");
+            $e_surname = filter_input(INPUT_POST, "e_surname");
+            $e_cell_num = filter_input(INPUT_POST, "e_cell_num");
+            $e_grade = filter_input(INPUT_POST, "e_grade");
 
+            edit_learner($id, $e_name, $e_surname, $e_grade, $e_cell_num);
+            header("Location: home.php");
+
+            exit();
         break;
         case "remove_learner":
             $id = filter_input(INPUT_POST, "selected_learner");
 
             remove_learner($id);
+            header("Location: home.php");
+            exit();
         break;
         case "admin_login":
             $a_email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);

@@ -20,12 +20,32 @@
                     <?php if ($_SESSION["role"] == "parents"): ?>
                         <h2>Welcome, <?php echo $_SESSION["user_info"]["name"] . " " .  $_SESSION["user_info"]["surname"] ?></h2>
 
-                        <!-- Table of learners here -->
-                        <table>
-                            <?php for ($i = 0; $i < count($learners); $i++): ?>
-                                <p><?php echo $learners[$i]["name"]?></p>
-                            <?php endfor; ?>
-                        </table>
+                        <?php if ($learners): ?>
+                            <div class="mb-3 form_move">
+                                <h3>Table of Learners</h3>
+                                <!-- Table of learners here -->
+                                <table class="table table-primary table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Learner Name</th>
+                                            <th>Grade</th>
+                                            <th>Cellphone Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php for ($i = 0; $i < count($learners); $i++): ?>
+                                            <tr>
+                                                <td><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
+                                                <td><?php echo $learners[$i]["grade"]?></td>
+                                                <td><?php echo $learners[$i]["cell_num"]?></td>
+                                            </tr>
+                                        <?php endfor; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <p>Add some learners to the system!</p>
+                        <?php endif; ?>
                     <?php else: ?>
                         <h2>Welcome, Administrator <?php echo $_SESSION["user_info"]["initials"] . " " . $_SESSION["user_info"]["surname"] ?></h2>
 

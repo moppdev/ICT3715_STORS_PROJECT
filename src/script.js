@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     learnerHubSPAFunction();
     learnerSelect();
     checkPhoneNum();
+    checkNameInputs();
+    blockFormPosting();
 
 });
 
@@ -123,7 +125,7 @@ function learnerHubSPAFunction()
             register.style.display = "none";
             edit.style.display = "block";
             remove.style.display = "none";
-            subtitle.textContent = "Edit a learner's details by completing the form below. The fields are enabled as you hover your cursor/pointer over them.";
+            subtitle.textContent = "Edit a learner's details by completing the form below.";
         });
         removeBtn.addEventListener("click", () => {
             title.textContent = "Remove a Learner";
@@ -147,106 +149,209 @@ function learnerSelect()
     // get the select element where learners are selected
     const options = document.getElementsByName("selected_learner")[0];
 
-    // Get the information of the learners
-    fetch("../index.php?action=get_learners")
-    .then(response => (response.json()))
-    .then(data => (learners = data))
-    .catch(error => console.log(error));
+    if (options)
+    {
+            // Get the information of the learners
+        fetch("../index.php?action=get_learners")
+        .then(response => (response.json()))
+        .then(data => (learners = data))
+        .catch(error => console.log(error));
 
-    // Check for when the value of options changes
-    options.addEventListener("change", () => {
-        const learnerInfo = learners[options.selectedIndex - 1];
-        const edit_learner = document.getElementById("edit_learner");
+        // Check for when the value of options changes
+        options.addEventListener("change", () => {
+            const learnerInfo = learners[options.selectedIndex - 1];
+            const edit_learner = document.getElementById("edit_learner");
 
-        // if the form exists
-        if (edit_learner)
-        {
-            // if the form is not displaying
-            if (edit_learner.style.display = "none")
+            // if the form exists
+            if (edit_learner)
             {
-                // show the form and get access to its elements
-                edit_learner.style.display = "block";
-                let name = document.getElementsByName("e_name")[0];
-                let surname = document.getElementsByName("e_surname")[0];
-                let cell_num = document.getElementsByName("e_cell_num")[0];
-                let grade = document.getElementsByName("e_grade")[0];
-                let id = document.getElementsByName("l_id")[0];
+                // if the form is not displaying
+                if (edit_learner.style.display = "none")
+                {
+                    // show the form and get access to its elements
+                    edit_learner.style.display = "block";
+                    let name = document.getElementsByName("e_name")[0];
+                    let surname = document.getElementsByName("e_surname")[0];
+                    let cell_num = document.getElementsByName("e_cell_num")[0];
+                    let grade = document.getElementsByName("e_grade")[0];
+                    let id = document.getElementsByName("l_id")[0];
 
-                // change the value of the elements to the selected learner's information
-                name.value = learnerInfo["name"];
-                surname.value= learnerInfo["surname"];
-                cell_num.value = learnerInfo["cell_num"];
-                grade.value = learnerInfo["grade"];
-                id.value = learnerInfo["id"];
+                    // change the value of the elements to the selected learner's information
+                    name.value = learnerInfo["name"];
+                    surname.value= learnerInfo["surname"];
+                    cell_num.value = learnerInfo["cell_num"];
+                    grade.value = learnerInfo["grade"];
+                    id.value = learnerInfo["id"];
 
-                 // Add events to the form controls, so when they're hovered over, they are reenabled and vice versa
-                editFormEvents(name, surname, grade, cell_num);
+                    // Change bgColor to White
+                    name.style.backgroundColor = "white";
+                    surname.style.backgroundColor = "white";
+                    cell_num.style.backgroundColor = "white";
+                    grade.style.backgroundColor = "white";
 
-                // Disable the form controls
-                name.disabled = true;
-                surname.disabled = true;
-                grade.disabled = true;
-                cell_num.disabled = true;
+                }
             }
-        }
-    });
-
-    function editFormEvents(name, surname, grade, cell_num) {
-        name.addEventListener("pointerover", () => {
-            name.disabled = false;
-        });
-        name.addEventListener("pointerout", () => {
-            name.disabled = true;
-        });
-        name.addEventListener("touchstart", () => {
-            name.disabled = true;
-        });
-        name.addEventListener("touchend", () => {
-            name.disabled = false;
-        });
-
-        surname.addEventListener("pointerover", () => {
-            surname.disabled = false;
-        });
-        surname.addEventListener("pointerout", () => {
-            surname.disabled = true;
-        });
-        surname.addEventListener("touchend", () => {
-            surname.disabled = false;
-        });
-        surname.addEventListener("touchstart", () => {
-            surname.disabled = true;
-        });
-
-        grade.addEventListener("pointerover", () => {
-            grade.disabled = false;
-        });
-        grade.addEventListener("pointerout", () => {
-            grade.disabled = true;
-        });
-        grade.addEventListener("touchend", () => {
-            grade.disabled = false;
-        });
-        grade.addEventListener("touchstart", () => {
-            grade.disabled = true;
-        });
-
-        cell_num.addEventListener("pointerover", () => {
-            cell_num.disabled = false;
-        });
-        cell_num.addEventListener("pointerout", () => {
-            cell_num.disabled = true;
-        });
-        cell_num.addEventListener("touchend", () => {
-            cell_num.disabled = false;
-        });
-        cell_num.addEventListener("touchstart", () => {
-            cell_num.disabled = true;
         });
     }
 }
 
+// function that checks a phone number being entered and returns appropriate output
 function checkPhoneNum()
 {
-    return 0;
+    const eCellNum = document.getElementsByName("e_cell_num");
+    const cellNum = document.getElementsByName("cell_num");
+
+    eCellNum.forEach((elem) => {
+        elem.addEventListener("input", () => {
+            let result = phoneRegexFunction(elem.value);
+            if (result)
+            {
+                elem.style.backgroundColor= "white";
+            }
+            else
+            {
+                elem.style.backgroundColor = "#FFCCCB";
+            }
+        })
+    })
+
+    cellNum.forEach((elem) => {
+        elem.addEventListener("input", () => {
+            let result = phoneRegexFunction(elem.value);
+            if (result)
+            {
+                elem.style.backgroundColor = "white";
+            }
+            else
+            {
+                elem.style.backgroundColor = "#FFCCCB";
+            }
+        })
+    })
+}
+
+// function that checks a name being entered and returns appropriate output
+function checkNameInputs()
+{
+    const eName = document.getElementsByName("e_name")[0];
+    const name = document.getElementsByName("name")[0];
+    const eSurname = document.getElementsByName("e_surname")[0];
+    const surname = document.getElementsByName("surname")[0];
+
+    let elementArray = [eName, name, eSurname, surname];
+
+    elementArray.forEach((elem) => {
+        elem.addEventListener("input", () => {
+            let result = nameRegexFunction(elem.value);
+            if (result)
+            {
+                elem.style.backgroundColor= "white";
+            }
+            else
+            {
+                elem.style.backgroundColor = "#FFCCCB";
+            }
+        })
+    })
+}
+
+// Function that actually checks a SA phone number via RegEx
+function phoneRegexFunction(cell_num)
+{
+    const regex = /^0[6-9]\d{8}$/;
+    return regex.test(cell_num);
+}
+
+// Function that actually checks text like names, etc via RegEx
+function nameRegexFunction(name)
+{
+    const regex = /^[A-Za-z]+$/;
+    return regex.test(name);
+}
+
+// Function that will check if all inputs in forms are correct, if not the submit button will be disabled
+function blockFormPosting()
+{
+    // Get all relevant elements
+    const eName = document.getElementsByName("e_name")[0];
+    const name = document.getElementsByName("name")[0];
+    const eSurname = document.getElementsByName("e_surname")[0];
+    const surname = document.getElementsByName("surname")[0];
+    const eCellNum = document.getElementsByName("e_cell_num")[0];
+    const cellNum = document.getElementsByName("cell_num")[0];
+    const eGrade = document.getElementsByName("e_grade")[0];
+    const grade = document.getElementsByName("grade")[0];
+    const selectedLearner = document.getElementsByName("selected_learner")[1];
+
+    // Get the relevant submit buttons
+    const editSubmit = document.getElementsByName("editBtn")[0];
+    const newSubmit = document.getElementsByName("registerBtn")[0];
+    const removeSubmit = document.getElementsByName("removeBtn")[0];
+
+
+    if (editSubmit && newSubmit && removeSubmit)
+    {
+            // for simplicity put all element variables in respective arrays
+            let editArray = [eName, eSurname, eGrade, eCellNum];
+            let registerArray = [name, surname, grade, cellNum];
+            let removeArray = [selectedLearner];
+
+            // disable the submit buttons
+            editSubmit.disabled = false;
+            newSubmit.disabled = true;
+            removeSubmit.disabled = true;
+
+            // Loop through the array and add an event listener to each element
+            editArray.forEach((elem) => {
+                elem.addEventListener("input", () => {
+                    if (eName && eSurname && eCellNum && eGrade)
+                    {
+                        // Check if the background color of all register inputs are red (signifies error) or not
+                        if (eName.style.backgroundColor == "white" && eSurname.style.backgroundColor == "white" 
+                            && eCellNum.style.backgroundColor == "white" && eGrade.value != "")
+                        {
+                            editSubmit.disabled = false;
+                        }
+                        else
+                        {
+                            editSubmit.disabled = true;
+                        }
+                    }
+                });
+        });
+
+        removeArray.forEach((elem) => {
+            elem.addEventListener(("input"), () => {
+
+                    if (selectedLearner)
+                    {
+                            // Check if a learner is selected to be removed
+                            if (selectedLearner.value != "")
+                            {
+                                removeSubmit.disabled = false;
+                            }
+                    }
+                });
+            })
+
+            registerArray.forEach((elem) => {
+                elem.addEventListener("input", () => {
+                    if (name && surname && cellNum && grade)
+                        {
+                                // Check if the background color of all edit inputs are red (signifies error) or not
+                                if (name.style.backgroundColor == "white" && surname.style.backgroundColor == "white" 
+                                    && cellNum.style.backgroundColor == "white" && grade.value != "")
+                                {
+                                    newSubmit.disabled = false;
+                                }
+                                else
+                                {
+                                    newSubmit.disabled = true;
+                                }
+                        }
+                })
+            })
+
+
+    };
 }
