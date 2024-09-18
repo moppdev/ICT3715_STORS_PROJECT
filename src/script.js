@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     checkPhoneNum();
     checkNameInputs();
     blockFormPosting();
+    functionToBeNamed();
 
 });
 
@@ -238,21 +239,24 @@ function checkNameInputs()
     const eSurname = document.getElementsByName("e_surname")[0];
     const surname = document.getElementsByName("surname")[0];
 
-    let elementArray = [eName, name, eSurname, surname];
+    if (eName && eSurname && name && surname)
+    {
+        let elementArray = [eName, name, eSurname, surname];
 
-    elementArray.forEach((elem) => {
-        elem.addEventListener("input", () => {
-            let result = nameRegexFunction(elem.value);
-            if (result)
-            {
-                elem.style.backgroundColor= "white";
-            }
-            else
-            {
-                elem.style.backgroundColor = "#FFCCCB";
-            }
+        elementArray.forEach((elem) => {
+            elem.addEventListener("input", () => {
+                let result = nameRegexFunction(elem.value);
+                if (result)
+                {
+                    elem.style.backgroundColor= "white";
+                }
+                else
+                {
+                    elem.style.backgroundColor = "#FFCCCB";
+                }
+            })
         })
-    })
+    }
 }
 
 // Function that actually checks a SA phone number via RegEx
@@ -354,4 +358,11 @@ function blockFormPosting()
 
 
     };
+}
+
+// function that will make applytransport.php an SPA
+function functionToBeNamed()
+{
+    const applyDiv = document.getElementById("apply_learner_div");
+    applyDiv.style.display = "none";
 }

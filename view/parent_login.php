@@ -44,9 +44,15 @@
                     <button class="btn btn-secondary" type="submit">Log In As Parent</button>
                 </form>
             </fieldset>
+            <!-- link to the admin login page -->
+            <div class="mb-3">
+                <a href="forgototp.php">Forgot password?</a>
+            </div>
 
             <!-- link to the admin login page -->
-            <a href="admin_login.php">Are you an admin? Login here.</a>
+            <div class="mb-3">
+                <a href="admin_login.php">Are you an admin? Login here.</a>
+            </div>
         </div>
     </div>
 

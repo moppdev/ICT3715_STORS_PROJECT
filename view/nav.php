@@ -17,7 +17,7 @@
                   <a class="nav-link" href="learner_hub.php">Learner Hub</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Apply For Transport</a>
+                  <a class="nav-link" href="applytransport.php">Apply For Transport</a>
                 </li>
               <?php elseif ($_SESSION["role"] == "admins"): ?>
                 <li class="nav-item">

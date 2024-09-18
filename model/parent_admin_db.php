@@ -18,7 +18,7 @@
     function get_admin_info($a_id)
     {
         global $db;
-        $query = "SELECT initials, surname, email FROM admins WHERE id = :id ";
+        $query = "SELECT initials, surname, email FROM admins WHERE admin_id = :id ";
         $statement = $db->prepare($query);
         $statement->bindValue(":id", $a_id);
         $statement->execute();

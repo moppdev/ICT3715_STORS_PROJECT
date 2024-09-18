@@ -39,6 +39,9 @@ html, body {
 #learner_hero {
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/learners.jpg);
 }
+#apply_hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/transport.jpg);
+}
 
 .hero {
     height: 52%;

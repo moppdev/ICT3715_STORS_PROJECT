@@ -5,7 +5,7 @@
     function admin_login($email, $password, $name)
     {
         global $db;
-        $query = "SELECT * FROM admins WHERE password = :password AND email = :email AND concat(initials, ' ', surname) = :name";
+        $query = "SELECT admin_id FROM admins WHERE password = :password AND email = :email AND concat(initials, ' ', surname) = :name";
         $statement = $db->prepare($query);
         $statement->bindValue(":password", $password);
         $statement->bindValue(":email", $email);
