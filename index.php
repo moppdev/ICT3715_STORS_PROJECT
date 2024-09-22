@@ -1,5 +1,5 @@
 <?php 
-    // Index file for the STORS
+    // Index file for STORS
     // Create session
     session_start();
 
@@ -8,6 +8,46 @@
     include "model/login_db.php";
     include "model/parent_admin_db.php";
     include "model/learners_db.php";
+    include "model/wait_application_db.php";
+    include "model/trips_routes_db.php";
+    // require 'PHPMailer/src/Exception.php';
+    // require 'PHPMailer/src/PHPMailer.php';
+    // require 'PHPMailer/src/SMTP.php';
+
+    // use PHPMailer\PHPMailer\PHPMailer;
+    // use PHPMailer\PHPMailer\Exception;
+
+    // function send_mail()
+    // {
+    //     $mail = new PHPMailer();
+
+    //     try {
+    //         // Server settings
+    //         $mail->isSMTP(); 
+    //         $mail->Host = 'smtp.gmail.com'; 
+    //         $mail->SMTPAuth = true; 
+    //         $mail->Username = 'howtovote2024@gmail.com'; 
+    //         $mail->Password = '4Vr@qgEgJt'; 
+    //         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
+    //         $mail->Port = 465; 
+    //         $mail->SMTPDebug = 2;
+
+    //         // Recipients
+    //         $mail->setFrom('howtovote2024@gmail.com', 'STORS');
+    //         $mail->addAddress('marcooppel1@gmail.com', 'Marco');
+
+    //         // Content
+    //         $mail->isHTML(true); 
+    //         $mail->Subject = 'Here is the subject';
+    //         $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+    //         $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    //         $mail->send();
+    //         echo 'Message has been sent';
+    //     } catch (Exception $e) {
+    //         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    //     }
+    // }
 
     // Get the value of action to determine what happens in the website
     $action = filter_input(INPUT_POST, "action");
@@ -20,7 +60,7 @@
         }
     }
 
-    // load parental or admin information
+    // load learners according to the role assigned in session
     if (isset($_SESSION["role"]))
     {
         if (isset($_SESSION["user_id"]))
@@ -32,6 +72,12 @@
             }
         }
     }
+
+    // Get all parents
+    $parents = get_all_parents();
+
+    // Get the route points
+    $points = getRoutePoints();
 
     // Check the value of action
     switch ($action) {
@@ -60,6 +106,19 @@
 
             create_new_learner($name, $surname, $cell_num, $grade);
             create_new_relation();
+            header("Location: home.php");
+
+            exit();
+        break;
+        case "register_learner_admin":
+            $name = filter_input(INPUT_POST, "name");
+            $surname = filter_input(INPUT_POST, "surname");
+            $cell_num = filter_input(INPUT_POST, "cell_num");
+            $grade = filter_input(INPUT_POST, "grade");
+            $p_id = filter_input(INPUT_POST, "parent");
+
+            create_new_learner($name, $surname, $cell_num, $grade);
+            create_new_relation($p_id);
             header("Location: home.php");
 
             exit();
@@ -104,6 +163,26 @@
         break;
         case "get_learners":
             echo json_encode($learners);
+        break;
+        case "apply_learner":
+            $id = filter_input(INPUT_POST, "l_id");
+            $pickup = filter_input(INPUT_POST, "pickup");
+            $dropoff = filter_input(INPUT_POST, "dropoff");
+
+            applyForLearner($id, $pickup, $dropoff);
+            send_mail();
+
+            header("Location: applytransport.php");
+
+            exit();
+        break;
+        case "cancel_app":
+            $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
+            cancelApplication($id);
+            echo json_encode(['success' => true]);
+
+            exit();
         break;
         case "sign_out":
             $_SESSION = array();

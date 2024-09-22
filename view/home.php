@@ -24,7 +24,7 @@
                             <div class="mb-3 form_move">
                                 <h3>Table of Learners</h3>
                                 <!-- Table of learners here -->
-                                <table class="table table-primary table-striped table-bordered">
+                                <table class="table table-primary table-striped table-bordered table-responsive">
                                     <thead>
                                         <tr>
                                             <th>Learner Name</th>

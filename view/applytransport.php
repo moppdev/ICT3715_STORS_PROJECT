@@ -17,6 +17,7 @@
 
             <main class="mb-3">
                <h2>List of Learners</h2>
+
                 <hr>
                 <div class="mb-3">
                             <!-- Table of learners here -->
@@ -24,19 +25,19 @@
                                     <thead>
                                         <tr>
                                             <th>Learner Name</th>
-                                            <th>Grade</th>
-                                            <th>Cellphone Number</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="learner_list">
                                         <?php for ($i = 0; $i < count($learners); $i++): ?>
                                             <tr>
-                                                <td><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
-                                                <td><?php echo $learners[$i]["grade"]?></td>
-                                                <td><?php echo $learners[$i]["cell_num"]?></td>
+                                                <td name="fullName"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
                                                 <td>
-                                                    <!-- TODO -->
+                                                    <?php if (checkLearnerApplyStatus($learners[$i]["id"])): ?>
+                                                        <button class="btn btn-danger" value="<?php echo $learners[$i]['id'] ?>" name="cancelBtn">Cancel Application</button>
+                                                    <?php else: ?>
+                                                        <button class="btn btn-primary" value="<?php echo $learners[$i]['id'] ?>" name="applyFormBtn">Apply For Transport</button>
+                                                    <?php endif; ?>
                                                 </td>
                                             </tr>
                                         <?php endfor; ?>
@@ -44,8 +45,12 @@
                             </table>
                     </div>
                     <hr>
+
+                    <!-- Application for learners -->
                     <div class="mb-3" id="apply_learner_div">
-                        <h3>Apply For Learner</h3>
+                        <h3 name="apply_heading">Apply For Learner</h3>
+
+                        <p>NB: Please select points that are on the same route. E.g. Select 1A and 1B of Rooihuiskraal.</p>
 
                         <form method="POST" id="apply_learner" class="form_move text-bg-primary">
                             <input hidden name="action" id="action" value="apply_learner"/>
@@ -55,11 +60,19 @@
                                 <label for="pickup">Pickup Point:</label>
                                 <select required name="pickup" class="form-select">
                                     <option value="" disabled selected>Select a pickup point</option>
-                                    <option value=""></option>
-                                    <option value=""></option>
-                                    <option value=""></option>
-                                    <option value=""></option>
-                                    <option value=""></option>
+                                    <?php foreach($points as $point) :?>
+                                        <option value="<?php echo $point["point_num"] ?>"><?php echo $point["route_name"] . " - " . $point["point_name"] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="dropoff">Dropoff Point:</label>
+                                <select required name="dropoff" class="form-select">
+                                    <option value="" disabled selected>Select a dropoff point</option>
+                                    <?php foreach($points as $point) :?>
+                                        <option value="<?php echo $point["point_num"] ?>"><?php echo $point["route_name"] . " - " . $point["point_name"] ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 

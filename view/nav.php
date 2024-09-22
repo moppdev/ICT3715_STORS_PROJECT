@@ -21,10 +21,10 @@
                 </li>
               <?php elseif ($_SESSION["role"] == "admins"): ?>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Parents</a>
+                  <a class="nav-link" href="admin_parents.php">Manage Parents</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Learners</a>
+                  <a class="nav-link" href="admin_learners.php">Manage Learners</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Manage Waiting List</a>

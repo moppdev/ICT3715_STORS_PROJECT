@@ -14,6 +14,19 @@
         return $result;
     }
 
+    // Get all parents
+    function get_all_parents()
+    {
+        global $db;
+        $query = "SELECT name, surname, id FROM parents ORDER BY surname";
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return $result;
+    }
+
+
     //Get administrator info
     function get_admin_info($a_id)
     {

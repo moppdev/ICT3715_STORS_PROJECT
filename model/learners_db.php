@@ -19,12 +19,19 @@
     // create new relation
     function create_new_relation()
     {
+        // Check if any arguments were passed
+        if (func_num_args() > 0) {
+            $parent_id = func_get_arg(0);
+        } else {
+            $parent_id = $_SESSION["user_id"]; 
+        }
+
         global $db;
          $query = "INSERT INTO relations VALUES (:id, :learner_id, :parent_id)";
         $statement = $db->prepare($query);
         $statement->bindValue(":id", $db->lastInsertId());
         $statement->bindValue(":learner_id", $db->lastInsertId());
-        $statement->bindValue(":parent_id", $_SESSION["user_id"]);
+        $statement->bindValue(":parent_id", $parent_id);
         $statement->execute();
         $statement->closeCursor();
     }
@@ -33,7 +40,7 @@
     function get_all_learners()
     {
         global $db;
-        $query = "SELECT * FROM learners";
+        $query = "SELECT * FROM learners ORDER BY surname";
         $statement = $db->prepare($query);
         $statement->execute();
         $result = $statement->fetchAll();
@@ -45,7 +52,7 @@
     function get_parent_learners()
     {
             global $db;
-            $query = "SELECT * FROM learners INNER JOIN relations WHERE relations.parent_id = :p_id AND relations.learner_id = learners.id";
+            $query = "SELECT * FROM learners INNER JOIN relations WHERE relations.parent_id = :p_id AND relations.learner_id = learners.id ORDER BY learners.surname";
             $statement = $db->prepare($query);
             $statement->bindValue(":p_id", $_SESSION["user_id"]);
             $statement->execute();
