@@ -26,15 +26,15 @@
     //         $mail->isSMTP(); 
     //         $mail->Host = 'smtp.gmail.com'; 
     //         $mail->SMTPAuth = true; 
-    //         $mail->Username = 'howtovote2024@gmail.com'; 
-    //         $mail->Password = '4Vr@qgEgJt'; 
+    //         $mail->Username = 'my gmail email'; 
+    //         $mail->Password = 'lol'; 
     //         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
     //         $mail->Port = 465; 
     //         $mail->SMTPDebug = 2;
 
     //         // Recipients
     //         $mail->setFrom('howtovote2024@gmail.com', 'STORS');
-    //         $mail->addAddress('marcooppel1@gmail.com', 'Marco');
+    //         $mail->addAddress('personal gmail', 'lol');
 
     //         // Content
     //         $mail->isHTML(true); 
