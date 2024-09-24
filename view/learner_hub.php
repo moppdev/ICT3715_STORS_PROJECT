@@ -123,7 +123,7 @@
 
                         <div class="mb-3">
                             <label>Select a learner you would like to remove:</label>
-                            <select name="selected_learner">
+                            <select required name="selected_learner">
                                 <option disabled selected value="">Select a learner</option>
                                 <?php for ($i = 0; $i < count($learners); $i++): ?>
                                     <option value="<?php echo $learners[$i]["id"] ?>"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></option>

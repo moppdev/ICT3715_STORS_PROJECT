@@ -8,13 +8,97 @@ document.addEventListener("DOMContentLoaded", () => {
     learnerSelect();
     checkPhoneNum();
     checkNameInputs();
+    checkEmailInputs();
     blockFormPosting();
+    blockEmailPassFormPosting();
     applySPA();
     selectStyling();
+    parentSPAFunction();
 
 });
 
     ////// functions //////
+
+    /// Function that essentially makes learner_hub.php and admin_learners.php a SPA, so that 
+    // a parent and admin can register, delete and edit a learner all on one page
+    function learnerHubSPAFunction()
+    {
+        // Get the buttons used on the page
+        const registerBtn = document.getElementById("registerBtn");
+        const editBtn = document.getElementById("editBtn");
+        const removeBtn = document.getElementById("removeBtn");
+
+        // Check if buttons exist
+        if (registerBtn && editBtn && removeBtn)
+        {
+            // Other elements like the title and sections themselves
+            const title = document.getElementById("title");
+            const register = document.getElementById("register");
+            const edit = document.getElementById("edit");
+            const remove = document.getElementById("remove");
+            const subtitle = document.getElementById("subtitle");
+
+            // Initial display
+            register.style.display = "block";
+            edit.style.display = "none";
+            remove.style.display = "none";
+
+            // Add onclick event listeners for each button
+            registerBtn.addEventListener("click", () => {
+                title.textContent = "Register a Learner";
+                registerBtn.className = "btn btn-primary";
+                editBtn.className = "btn btn-secondary";
+                removeBtn.className = "btn btn-secondary";
+                register.style.display = "block";
+                edit.style.display = "none";
+                remove.style.display = "none";
+                subtitle.textContent = "Fill in the form below to register your child on the system!";
+            });
+            editBtn.addEventListener("click", () => {
+                title.textContent = "Edit a Learner's Details";
+                registerBtn.className = "btn btn-secondary";
+                editBtn.className = "btn btn-primary";
+                removeBtn.className = "btn btn-secondary";
+                register.style.display = "none";
+                edit.style.display = "block";
+                remove.style.display = "none";
+                subtitle.textContent = "Edit a learner's details by completing the form below.";
+            });
+            removeBtn.addEventListener("click", () => {
+                title.textContent = "Remove a Learner";
+                registerBtn.className = "btn btn-secondary";
+                editBtn.className = "btn btn-secondary";
+                removeBtn.className = "btn btn-primary";
+                register.style.display = "none";
+                edit.style.display = "none";
+                remove.style.display = "block";
+                subtitle.textContent = "Remove a learner from the system by completing the form below.";
+            });
+        }
+    }
+
+        // Making the select elements that relate to learners and parents scrollable
+        function selectStyling()
+        {
+            const parents = document.getElementsByName("parent");
+        
+            parents.forEach((elem) => {
+                elem.size = 10;
+        
+                elem.addEventListener('focus', function() {
+                    this.size = 5;
+                });
+        
+                elem.addEventListener('blur', function() {
+                    this.size = 1;
+                });
+        
+                elem.addEventListener('change', function() {
+                    this.size = 1;
+                    this.blur();
+                });
+            });
+        }
 
     // password visibility toggle
     function passwordToggle()
@@ -260,6 +344,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+        // function that checks an email being entered and returns appropriate output
+        function checkEmailInputs()
+        {
+            const eEmail = document.getElementsByName("e_email")[0];
+            const email = document.getElementsByName("email")[0];
+
+            if (eEmail && email)
+            {
+                let elementArray = [eEmail, email];
+    
+                elementArray.forEach((elem) => {
+                    elem.addEventListener("input", () => {
+                        let result = emailRegexFunction(elem.value);
+                        if (result)
+                        {
+                            elem.style.backgroundColor= "white";
+                        }
+                        else
+                        {
+                            elem.style.backgroundColor = "#FFCCCB";
+                        }
+                    })
+                })
+            }
+        }
+    
+
     // Function that actually checks a SA phone number via RegEx
     function phoneRegexFunction(cell_num)
     {
@@ -274,7 +385,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return regex.test(name);
     }
 
-    // Function that will check if all inputs in forms are correct, if not the submit button will be disabled
+    // Function that actually checks emails via RegEx
+    function emailRegexFunction(email)
+    {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+    }
+
+    // Function that will check if inputs in forms are correct, if not the submit button will be disabled
     function blockFormPosting()
     {
         // Get all relevant elements
@@ -287,6 +405,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const eGrade = document.getElementsByName("e_grade")[0];
         const grade = document.getElementsByName("grade")[0];
         const selectedLearner = document.getElementsByName("selected_learner")[1];
+        const selectedParent = document.getElementsByName("selected_parent")[1];
+        const eEmail = document.getElementsByName("e_email")[0];
+        const email = document.getElementsByName("email")[0];
+        const ePass = document.getElementsByName("e_pass")[0];
+        const pass = document.getElementsByName("pass")[0];
 
         // Get the relevant submit buttons
         const editSubmit = document.getElementsByName("editBtn")[0];
@@ -297,67 +420,93 @@ document.addEventListener("DOMContentLoaded", () => {
         if (editSubmit && newSubmit && removeSubmit)
         {
                 // for simplicity put all element variables in respective arrays
-                let editArray = [eName, eSurname, eGrade, eCellNum];
-                let registerArray = [name, surname, grade, cellNum];
-                let removeArray = [selectedLearner];
+                let editArray = [eName, eSurname, eGrade, eCellNum, eEmail, ePass];
+                let registerArray = [name, surname, grade, cellNum, email, pass];
+                let removeArray = [selectedLearner, selectedParent];
 
                 // disable the submit buttons
                 editSubmit.disabled = false;
                 newSubmit.disabled = true;
                 removeSubmit.disabled = true;
 
-                // Loop through the array and add an event listener to each element
-                editArray.forEach((elem) => {
-                    elem.addEventListener("input", () => {
-                        if (eName && eSurname && eCellNum && eGrade)
-                        {
-                            // Check if the background color of all register inputs are red (signifies error) or not
-                            if (eName.style.backgroundColor == "white" && eSurname.style.backgroundColor == "white" 
-                                && eCellNum.style.backgroundColor == "white" && eGrade.value != "")
+                if (editArray)
+                {
+                         // Loop through the array and add an event listener to each element
+                        editArray.forEach((elem) => {
+                            if (elem)
                             {
-                                editSubmit.disabled = false;
-                            }
-                            else
-                            {
-                                editSubmit.disabled = true;
-                            }
-                        }
-                    });
-            });
-
-            removeArray.forEach((elem) => {
-                elem.addEventListener(("input"), () => {
-
-                        if (selectedLearner)
-                        {
-                                // Check if a learner is selected to be removed
-                                if (selectedLearner.value != "")
-                                {
-                                    removeSubmit.disabled = false;
-                                }
-                        }
-                    });
-                })
-
-                registerArray.forEach((elem) => {
-                    elem.addEventListener("input", () => {
-                        if (name && surname && cellNum && grade)
-                            {
-                                    // Check if the background color of all edit inputs are red (signifies error) or not
-                                    if (name.style.backgroundColor == "white" && surname.style.backgroundColor == "white" 
-                                        && cellNum.style.backgroundColor == "white" && grade.value != "")
-                                    {
-                                        newSubmit.disabled = false;
+                                elem.addEventListener("input", () => {
+                                        if (eName && eSurname && eCellNum && eGrade)
+                                        {
+                                            // Check if the background color of all register inputs are red (signifies error) or not
+                                            if (eName.style.backgroundColor == "white" && eSurname.style.backgroundColor == "white" 
+                                                && eCellNum.style.backgroundColor == "white" && eGrade.value != "")
+                                            {
+                                                editSubmit.disabled = false;
+                                            }
+                                            else
+                                            {
+                                                editSubmit.disabled = true;
+                                            }
+                                        }
                                     }
-                                    else
-                                    {
-                                        newSubmit.disabled = true;
-                                    }
+                                );
                             }
+                    });
+                }
+
+                if (removeArray)
+                {
+                    removeArray.forEach((elem) => {
+                            if (elem)
+                            {
+                                elem.addEventListener(("input"), () => {
+        
+                                    if (selectedLearner)
+                                    {
+                                            // Check if a learner is selected to be removed
+                                            if (selectedLearner.value != "")
+                                            {
+                                                removeSubmit.disabled = false;
+                                            }
+                                    }
+
+                                    if (selectedParent)
+                                        {
+                                                // Check if a learner is selected to be removed
+                                                if (selectedParent.value != "")
+                                                {
+                                                    removeSubmit.disabled = false;
+                                                }
+                                        }
+                                });
+                            }
+                        })
+                }
+
+                if (registerArray)
+                {
+                    registerArray.forEach((elem) => {
+                        if (elem)
+                        {
+                            elem.addEventListener("input", () => {
+                                if (name && surname && cellNum && grade)
+                                    {
+                                            // Check if the background color of all edit inputs are red (signifies error) or not
+                                            if (name.style.backgroundColor == "white" && surname.style.backgroundColor == "white" 
+                                                && cellNum.style.backgroundColor == "white" && grade.value != "")
+                                            {
+                                                newSubmit.disabled = false;
+                                            }
+                                            else
+                                            {
+                                                newSubmit.disabled = true;
+                                            }
+                                    }
+                            })
+                        }
                     })
-                })
-
-
+                }
         };
     }
 
@@ -388,6 +537,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.success) {
+                                        // alert the user
+                                        alert("SUCCESS: APPLICATION CANCELLED")
+
                                         // Switch button from "Cancel Application" to "Apply For Transport"
                                         elem.classList.remove("btn-danger");
                                         elem.classList.add("btn-primary");
@@ -419,8 +571,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         const learnerName = currentRow.cells[0].textContent;
                         applyHeading.textContent = `Apply For ${learnerName}`;
                         learnerID.value = elem.value;
-                        const email = document.getElementsByName("parent_email")[0];
-                        const name = document.getElementsByName("parent_name")[0];
                     })}
             );
 
@@ -469,28 +619,62 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         }
     }
-
-    // Making the select elements that relate to learners and parents scrollable
-    function selectStyling()
-    {
-        const parents = document.getElementsByName("parent");
-    
-        parents.forEach((elem) => {
-            elem.size = 10;
-    
-            elem.addEventListener('focus', function() {
-                this.size = 5;
-            });
-    
-            elem.addEventListener('blur', function() {
-                this.size = 1;
-            });
-    
-            elem.addEventListener('change', function() {
-                this.size = 1;
-                this.blur();
-            });
-        });
-    }
-
 }
+
+    /// Function that essentially makes admin_learners.php a SPA, so that 
+    // an admin can register, delete and edit a parent all on one page
+    function parentSPAFunction()
+    {
+        // Get the buttons used on the page
+        const registerBtn = document.getElementById("registerParentBtn");
+        const editBtn = document.getElementById("editParentBtn");
+        const removeBtn = document.getElementById("removeParentBtn");
+
+        // Check if buttons exist
+        if (registerBtn && editBtn && removeBtn)
+        {
+            // Other elements like the title and sections themselves
+            const title = document.getElementById("title");
+            const register = document.getElementById("register");
+            const edit = document.getElementById("edit");
+            const remove = document.getElementById("remove");
+            const subtitle = document.getElementById("subtitle");
+
+            // Initial display
+            register.style.display = "block";
+            edit.style.display = "none";
+            remove.style.display = "none";
+
+            // Add onclick event listeners for each button
+            registerBtn.addEventListener("click", () => {
+                title.textContent = "Register a Parent";
+                registerBtn.className = "btn btn-primary";
+                editBtn.className = "btn btn-secondary";
+                removeBtn.className = "btn btn-secondary";
+                register.style.display = "block";
+                edit.style.display = "none";
+                remove.style.display = "none";
+                subtitle.textContent = "Fill in the form below to create a parent.";
+            });
+            editBtn.addEventListener("click", () => {
+                title.textContent = "Edit a Parent's Details";
+                registerBtn.className = "btn btn-secondary";
+                editBtn.className = "btn btn-primary";
+                removeBtn.className = "btn btn-secondary";
+                register.style.display = "none";
+                edit.style.display = "block";
+                remove.style.display = "none";
+                subtitle.textContent = "Edit a parent's details by completing the form below.";
+            });
+            removeBtn.addEventListener("click", () => {
+                title.textContent = "Remove a Parent";
+                registerBtn.className = "btn btn-secondary";
+                editBtn.className = "btn btn-secondary";
+                removeBtn.className = "btn btn-primary";
+                register.style.display = "none";
+                edit.style.display = "none";
+                remove.style.display = "block";
+                subtitle.textContent = "Remove a parent and their related information from the system by completing the form below.";
+            });
+        }
+    }

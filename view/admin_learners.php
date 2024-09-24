@@ -9,7 +9,7 @@
 
         <!-- hero image -->
         <div class="hero" id="learner_hero">
-            <h1 class="hero_text display-4">Learner Hub For Admins</h1>
+            <h1 class="hero_text display-4">Manage Learners</h1>
         </div>
 
         <!-- main content -->
