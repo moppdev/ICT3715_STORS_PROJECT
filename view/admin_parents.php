@@ -20,6 +20,7 @@
             <hr>
             <div>
                 <p>Get started by clicking one of the three buttons below!</p>
+                <p>P.S Be mindul of good password practices when creating passwords.</p>
 
                 <!-- Buttons to toggle fragment used/shown -->
                 <button class="btn btn-primary" id="registerParentBtn">Register New Parent</button>
@@ -63,7 +64,7 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>    
                         <input name="password" type="password" class="form-control" required/>
-                        <span id="togglePassword" class="eye">
+                        <span name="togglePassword" class="eye">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
@@ -81,7 +82,7 @@
             <div class="learner_section" id="edit">
                 <div class="mb-3">
                     <label>Select a parent's details you would like to change:</label>
-                    <select name="selected_learner">
+                    <select name="selected_parent">
                         <option value="" disabled selected>Select a parent</option>
                         <?php for ($i = 0; $i < count($parents); $i++): ?>
                             <option value="<?php echo $parents[$i]["id"] ?>"><?php echo $parents[$i]["name"] . " " . $parents[$i]["surname"] ?></option>
@@ -116,7 +117,7 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>    
                         <input name="e_password" type="password" class="form-control" required/>
-                        <span id="togglePassword" class="eye">
+                        <span name="togglePassword" class="eye">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
@@ -126,7 +127,7 @@
                         </span>
                     </div>
 
-                    <button type="submit" class="btn btn-warning" name="editBtn">Edit Learner's Details</button>
+                    <button type="submit" class="btn btn-warning" name="editBtn">Edit Parent's Details</button>
                 </form>
             </div>
 
@@ -145,7 +146,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-danger" name="removeBtn">Remove Learner</button>
+                    <button type="submit" class="btn btn-danger" name="removeBtn">Remove Parent</button>
                 </form>
             </div>
         </main> 

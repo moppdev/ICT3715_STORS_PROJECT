@@ -66,31 +66,32 @@
         $statement->bindValue(":parent_id", $parent_id);
         $statement->execute();
         $learner_ids = $statement->fetchAll();
+        $learner_ids = implode(',', $learner_ids);
         $statement->closeCursor();
 
         if (!empty($learner_ids)) {
             $query = "DELETE FROM learner_trips WHERE learner_id IN (:ids)";
             $statement = $db->prepare($query);
             $statement->bindValue(":ids", $learner_ids);
-            $statement->execute($learner_ids);
+            $statement->execute();
             $statement->closeCursor();
     
             $query = "DELETE FROM applications WHERE learner_id IN (:ids)";
             $statement = $db->prepare($query);
             $statement->bindValue(":ids", $learner_ids);
-            $statement->execute($learner_ids);
+            $statement->execute();
             $statement->closeCursor();
     
             $query = "DELETE FROM waiting_list WHERE learner_id IN (:ids)";
             $statement = $db->prepare($query);
             $statement->bindValue(":ids", $learner_ids);
-            $statement->execute($learner_ids);
+            $statement->execute();
             $statement->closeCursor();
     
             $query = "DELETE FROM learners WHERE id IN (:ids)";
             $statement = $db->prepare($query);
             $statement->bindValue(":ids", $learner_ids);
-            $statement->execute($learner_ids);
+            $statement->execute();
             $statement->closeCursor();
         }
     
@@ -130,7 +131,7 @@
     function get_all_parents()
     {
         global $db;
-        $query = "SELECT name, surname, id FROM parents ORDER BY surname";
+        $query = "SELECT * FROM parents ORDER BY surname";
         $statement = $db->prepare($query);
         $statement->execute();
         $result = $statement->fetchAll();

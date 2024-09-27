@@ -30,16 +30,18 @@
                                     </thead>
                                     <tbody id="learner_list">
                                         <?php for ($i = 0; $i < count($learners); $i++): ?>
-                                            <tr>
-                                                <td name="fullName"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
-                                                <td>
-                                                    <?php if (checkLearnerApplyStatus($learners[$i]["id"])): ?>
-                                                        <button class="btn btn-danger" value="<?php echo $learners[$i]['id'] ?>" name="cancelBtn">Cancel Application</button>
-                                                    <?php else: ?>
-                                                        <button class="btn btn-primary" value="<?php echo $learners[$i]['id'] ?>" name="applyFormBtn">Apply For Transport</button>
-                                                    <?php endif; ?>
-                                                </td>
-                                            </tr>
+                                            <?php if (!checkLearnerPassengerStatus($learners[$i]["id"])) : ?>
+                                                <tr>
+                                                    <td name="fullName"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
+                                                    <td>
+                                                        <?php if (checkLearnerApplyStatus($learners[$i]["id"])): ?>
+                                                            <button class="btn btn-danger" value="<?php echo $learners[$i]['id'] ?>" name="cancelBtn">Cancel Application</button>
+                                                        <?php else: ?>
+                                                            <button class="btn btn-primary" value="<?php echo $learners[$i]['id'] ?>" name="applyFormBtn">Apply For Transport</button>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
                                         <?php endfor; ?>
                                     </tbody>
                             </table>

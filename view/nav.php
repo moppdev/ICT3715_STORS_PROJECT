@@ -27,7 +27,7 @@
                   <a class="nav-link" href="admin_learners.php">Manage Learners</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Waiting List</a>
+                  <a class="nav-link" href="admin_lists.php">Manage Waiting List</a>
                 </li>
               <?php endif; ?>
                   <li class="nav-item">

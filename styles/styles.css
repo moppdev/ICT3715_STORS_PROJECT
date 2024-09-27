@@ -45,6 +45,12 @@ html, body {
 #parent_hero {
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/parents.jpg);
 }
+#db_error_hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/dberror.jpg);
+}
+#forgot_hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/forgot.jpg);
+}
 
 .hero {
     height: 52%;
@@ -81,6 +87,9 @@ html, body {
 }
 
 #edit_learner {
+    display: none;
+}
+#edit_parent {
     display: none;
 }
 

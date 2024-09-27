@@ -136,15 +136,23 @@
             $name = filter_input(INPUT_POST, "name");
             $surname = filter_input(INPUT_POST, "surname");
             $cell_num = filter_input(INPUT_POST, "cell_num");
-            $grade = filter_input(INPUT_POST, "grade");
-            $p_id = filter_input(INPUT_POST, "parent");
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+            $password = filter_input(INPUT_POST, "password");
 
-            
+            // Create parent and send email with login details
+            create_parent($name, $surname, $password, $cell_num, $email);
+            send_mail("STORS Account Creation" , "<b>Dear $name</b>, your account has been created. <br> <b>Username: <b> $email <br>
+            <b>Password: </b> $password <br><br>
+            <br> Kind Regards <br> Strive High", 
+            "Dear $name, your account has been created. \nUsername: $email \nPassword: $password \nKind Regards \nStrive High", $email, $name);
+
+            header("Location: home.php");
+            exit();
         break;
         case "edit_learner":
             // Edit a learner's details
             // Get inputs
-            $id = filter_input(INPUT_POST, "l_id");
+            $id = filter_input(INPUT_POST, "l_id", FILTER_VALIDATE_INT);
             $e_name = filter_input(INPUT_POST, "e_name");
             $e_surname = filter_input(INPUT_POST, "e_surname");
             $e_cell_num = filter_input(INPUT_POST, "e_cell_num");
@@ -157,7 +165,31 @@
             exit();
         break;
         case "edit_parent":
-            echo "Hello";
+            // Edit a parent's details
+            // Get inputs
+            $id = filter_input(INPUT_POST, "p_id", FILTER_VALIDATE_INT);
+            $e_name = filter_input(INPUT_POST, "e_name");
+            $e_surname = filter_input(INPUT_POST, "e_surname");
+            $e_cell_num = filter_input(INPUT_POST, "e_cell_num");
+            $e_email = filter_input(INPUT_POST, "e_email", FILTER_SANITIZE_EMAIL);
+            $e_pass = filter_input(INPUT_POST, "e_password");
+
+            // Edit the learner
+            edit_parent($id, $e_name, $e_surname, $e_email, $e_cell_num, $e_pass);
+
+            // Notification email
+            send_mail("STORS Account Detail Change" , "<b>Dear $e_name</b>, your account information has been edited.<br><br> 
+                        Name: $e_name $e_surname<br>
+                        Email: $e_email<br>
+                        Cell Number: $e_cell_num<br>
+                        Password: $e_pass <br><br>
+                        Kind Regards,<br>Strive High",
+            "Dear $name, Your account information has been edited.\n\n Name: $e_name $e_surname\n Email: $e_email\n Cell Number: $e_cell_num\n Password: $e_pass \n\n
+            Kind Regards,\nStrive High", $e_email, $e_name);
+
+            header("Location: home.php");
+
+            exit();
         break;
         case "remove_learner":
             // Remove a learner from the system
@@ -165,11 +197,29 @@
 
             // Remove learner
             remove_learner($id);
+
             header("Location: home.php");
             exit();
         break;
         case "remove_parent":
-            echo "Hello";
+            // Remove a parent from the system
+            $id = filter_input(INPUT_POST, "selected_parent", FILTER_VALIDATE_INT);
+
+            // Parent info
+            $cur_parent = get_parent_info($id);
+            $name = $cur_parent["name"];
+            $email = $cur_parent["email"];
+
+            // Remove parent
+            remove_parent($id);
+
+            // Send notification email
+            send_mail("STORS Account Deletion" , "<b>Dear $name</b>, your account and all related information has been deleted.
+            <br> Kind Regards <br> Strive High", 
+            "Dear $name, your account and all related information has been deleted. \nKind Regards \nStrive High", $email, $name);
+
+            header("Location: home.php");
+            exit();
         break;
         case "admin_login":
             // Login as admin
@@ -198,10 +248,14 @@
             // Return learners for FETCH request in JSON format
             echo json_encode($learners);
         break;
+        case "get_parents":
+            // Return parents for FETCH request in JSON format
+            echo json_encode($parents);
+        break;
         case "apply_learner":
             // Apply for transport for a learner via parent
             // Get input
-            $id = filter_input(INPUT_POST, "l_id");
+            $id = filter_input(INPUT_POST, "l_id", FILTER_VALIDATE_INT);
             $pickup = filter_input(INPUT_POST, "pickup");
             $dropoff = filter_input(INPUT_POST, "dropoff");
 

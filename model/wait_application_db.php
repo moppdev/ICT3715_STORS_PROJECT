@@ -5,14 +5,37 @@
     function checkLearnerApplyStatus($id)
     {
         global $db;
-        $query = "SELECT waiting_list.learner_id FROM applications INNER JOIN waiting_list ON applications.learner_id = waiting_list.learner_id
+        $query = "SELECT waiting_list.learner_id FROM applications 
+                        INNER JOIN waiting_list ON applications.learner_id = waiting_list.learner_id
                         WHERE applications.learner_id = :id";
         $statement = $db->prepare($query);
         $statement->bindValue(":id", $id);
         $statement->execute();
         $result = $statement->fetch();
         $statement->closeCursor();
-        if ($result == NULL)
+        if ($result == NULL || $result == false)
+        {
+            $result = false;
+        }
+        else
+        {
+            $result = true;
+        }
+        return $result;
+    }
+
+    // Check if a learner's in the passenger lists
+    function checkLearnerPassengerStatus($id)
+    {
+        global $db;
+        $query = "SELECT learner_id FROM learner_trips
+                        WHERE learner_id = :id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $result = $statement->fetch();
+        $statement->closeCursor();
+        if ($result == NULL || $result === false)
         {
             $result = false;
         }
