@@ -46,6 +46,21 @@
         return $result;
     }
 
+    // Get a learner's passenger info
+    function getPassengerInfo($id)
+    {
+        global $db;
+        $query = "SELECT id, t1.point_name AS p1_name, t1.pickup_time AS p1_time, t2.point_name AS p2_name, t2.dropoff_time AS p2_time FROM learner_trips 
+        INNER JOIN route_points AS t1 ON t1.point_num = learner_trips.pickup_id 
+        INNER JOIN route_points AS t2 on t2.point_num = learner_trips.dropoff_id WHERE learner_id = :id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $result = $statement->fetch();
+        $statement->closeCursor();
+        return $result;
+    }
+
     // Create an application for a learner and automatically add them to the waiting list
     function applyForLearner($id, $pickup, $dropoff)
     {

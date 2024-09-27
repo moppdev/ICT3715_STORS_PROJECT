@@ -5,6 +5,14 @@ html, body {
     padding: 0;
     margin: 0;
     height: 100%;
+    width: 100%;
+}
+
+#learnerDropdown {
+    display: none;
+}
+#parentDropdown {
+    display: none;
 }
 
 .form_move {
@@ -48,9 +56,6 @@ html, body {
 #db_error_hero {
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/dberror.jpg);
 }
-#forgot_hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/forgot.jpg);
-}
 
 .hero {
     height: 52%;
@@ -59,11 +64,9 @@ html, body {
     background-size: cover;
 }
 
-
-
 .hero_text {
     text-align: center;
-    transform: translate(-50%, -200%);
+    transform: translate(-50%, -180%);
     position: absolute;
     top: 50%;
     left: 50%;

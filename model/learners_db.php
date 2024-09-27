@@ -60,6 +60,18 @@
             return $result;
     }
 
+    // function to retrieve a parent's id related to a learner
+    function get_parent_id($learner_id)
+    {
+            global $db;
+            $query = "SELECT parent_id FROM relations WHERE relations.learner_id = :l_id";
+            $statement = $db->prepare($query);
+            $statement->bindValue(":l_id", $learner_id);
+            $statement->execute();
+            $result = $statement->fetch();
+            return $result;
+    }
+
     // function to remove a learner
     function remove_learner($learner_id)
     {

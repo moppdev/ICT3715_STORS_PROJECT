@@ -69,12 +69,19 @@
 
                         <div class="mb-3">
                             <label for="parent">Parent:</label>
-                            <select required name="parent" class="form-select">
-                                <option value="" disabled selected>Select parent related to child:</option>
-                                <?php for ($i = 0; $i < count($parents); $i++): ?>
-                                    <option value="<?php echo $parents[$i]["id"] ?>"><?php echo $parents[$i]["name"] . " " . $parents[$i]["surname"] ?></option>
-                                <?php endfor; ?>
-                            </select>
+
+                            <!-- searcher for parents -->
+                            <input type="text" name="searcher" placeholder=" Search for a learner here" class="form-control"/>
+                                <!-- Dropdown to hold parents -->
+                                <div id="parentDropdown" class="dropdown-menu show mt-1" style="max-height: 200px; overflow-y: auto;">
+                                    <!-- The options will be dynamically filtered and shown here -->
+                                    <?php for ($i = 0; $i < count($parents); $i++): ?>
+                                                <button class="dropdown-item" type="button" data-value="<?php echo $parents[$i]["id"] ?>">
+                                                    <?php echo $parents[$i]["name"] . " " . $parents[$i]["surname"] ?>
+                                                </button>
+                                    <?php endfor; ?>
+                                </div>
+                                <input hidden name="parent" id="parent" value=""/>
                         </div>
 
                         <button type="submit" class="btn btn-warning" name="registerBtn">Register New Learner</button>

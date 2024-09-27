@@ -255,7 +255,7 @@
         case "apply_learner":
             // Apply for transport for a learner via parent
             // Get input
-            $id = filter_input(INPUT_POST, "l_id", FILTER_VALIDATE_INT);
+            $id = filter_input(INPUT_POST, "l_id");
             $pickup = filter_input(INPUT_POST, "pickup");
             $dropoff = filter_input(INPUT_POST, "dropoff");
 
@@ -270,6 +270,31 @@
             "Dear $name, your application for one of your learners has been successful. Kind Regards Strive High", $email, $name);
 
             header("Location: applytransport.php");
+
+            exit();
+        break;
+        case "apply_learner_admin":
+            // Apply for transport for a learner via admin
+            // Get input
+            $id = filter_input(INPUT_POST, "l_id", FILTER_VALIDATE_INT);
+            $pickup = filter_input(INPUT_POST, "pickup");
+            $dropoff = filter_input(INPUT_POST, "dropoff");
+
+            // Apply for learner
+            applyForLearner($id, $pickup, $dropoff);
+
+            // Get parent details
+            $info = get_parent_id($id);
+            $parent = get_parent_info($info["parent_id"]);
+
+            // Get send email
+            $name = $parent['name'];
+            $email = $parent['email'];
+
+            send_mail("STORS Application Notification" , "<b>Dear $name</b>, your application for one of your learners has been successful. <br> Kind Regards <br> Strive High", 
+            "Dear $name, your application for one of your learners has been successful. Kind Regards Strive High", $email, $name);
+
+            header("Location: admin_lists.php");
 
             exit();
         break;
@@ -288,6 +313,17 @@
 
             send_mail("STORS Application Cancellation Notification" , "<b>Dear $name</b>, <br><br> your application for one of your learners has been cancelled. <br><br> Kind Regards <br> Strive High", 
             "Dear $name, your application for one of your learners has been cancelled. Kind Regards Strive High", $email, $name);
+
+            exit();
+        break;
+        case "cancel_app_admin":
+            // Cancel an application for learner via admin
+            // get input
+            $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
+            // Cancel application and send json response
+            cancelApplication($id);
+            echo json_encode(['success' => true]);
 
             exit();
         break;

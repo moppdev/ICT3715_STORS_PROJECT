@@ -19,7 +19,7 @@
                <h2>List of Learners</h2>
 
                 <hr>
-                <div class="mb-3">
+                <div class="mb-3 table-responsive">
                             <!-- Table of learners here -->
                             <table class="table table-primary table-striped table-bordered">
                                     <thead>

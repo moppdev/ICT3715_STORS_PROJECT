@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (clicked)
                 {
                     clicked = false;
-                    heroText.style.transform = "translate(-50%,-200%)";
+                    heroText.style.transform = "translate(-50%,-180%)";
                 }
                 else
                 {
@@ -612,7 +612,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // if cancelBtns are defined, add an event listener
             if (cancelBtns)
             {
-                // when clicked, send a fetch POST to index.php to delete the application
+                // when clicked, send a fetch GET to index.php to delete the application
                 if (cancelBtns) {
                     cancelBtns.forEach((elem) => {
                         elem.addEventListener("pointerdown", () => {
@@ -818,4 +818,161 @@ document.addEventListener("DOMContentLoaded", () => {
                  subtitle.textContent = "Manage the passenger lists below";
              });
          }
+
+         //// The same as below but for parents in "apply for a learner" ////
+         // Allow the admin to search for a specific student to apply for
+         let searcherTwo = document.getElementsByName('searcher')[0];
+         let parentDropdown = document.getElementById('parentDropdown');
+         let parent = document.getElementById("parent");
+
+         // Add an input event listener to the searcher, convert the input to lowercase and search amongst the options
+            searcherTwo.addEventListener('input', function() {
+                const searchTerm = searcherTwo.value.toLowerCase();
+                const options = parentDropdown.getElementsByClassName('dropdown-item');
+            
+                let hasVisibleOptions = false;
+            
+                for (let i = 0; i < options.length; i++) {
+                    const optionText = options[i].textContent.toLowerCase();
+                    if (optionText.includes(searchTerm)) {
+                        options[i].style.display = 'block';
+                        hasVisibleOptions = true;
+                    } else {
+                        options[i].style.display = 'none';
+                    }
+                }
+            
+                // Toggle the dropdown visibility based on matching options
+                if (hasVisibleOptions) {
+                    parentDropdown.style.display = 'block';
+                } else {
+                    parentDropdown.style.display = 'none';
+                }
+            });
+            
+            // Add event listener to allow the admin to select an option
+            parentDropdown.addEventListener('click', (e) => {
+                if (e.target.classList.contains('dropdown-item')) {
+                    searcherTwo.value = e.target.textContent.trim();
+                    parent.value = parseInt(e.target.dataset.value);
+                    parentDropdown.style.display = 'none';
+                }
+            });
+
+            parentDropdown.addEventListener("focusout", () => {
+                parentDropdown.style.display = "none";
+            });
+
+            // Allow the admin to search for a specific student to apply for
+         let searcher = document.getElementsByName('searcher')[0];
+         let dropdown = document.getElementById('learnerDropdown');
+         let learn_id = document.getElementById("l_id");
+
+         if (dropdown && searcher)
+        {
+            // Add an input event listener to the searcher, convert the input to lowercase and search amongst the options
+            searcher.addEventListener('input', function() {
+                const searchTerm = searcher.value.toLowerCase();
+                const options = dropdown.getElementsByClassName('dropdown-item');
+            
+                let hasVisibleOptions = false;
+            
+                for (let i = 0; i < options.length; i++) {
+                    const optionText = options[i].textContent.toLowerCase();
+                    if (optionText.includes(searchTerm)) {
+                        options[i].style.display = 'block';
+                        hasVisibleOptions = true;
+                    } else {
+                        options[i].style.display = 'none';
+                    }
+                }
+            
+                // Toggle the dropdown visibility based on matching options
+                if (hasVisibleOptions) {
+                    dropdown.style.display = 'block';
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            });
+            
+            // Add event listener to allow the admin to select an option
+            dropdown.addEventListener('click', (e) => {
+                if (e.target.classList.contains('dropdown-item')) {
+                    searcher.value = e.target.textContent.trim();
+                    learn_id.value = parseInt(e.target.dataset.value);
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            dropdown.addEventListener("focusout", () => {
+                dropdown.style.display = "none";
+            });
+        }
+
+            // Get the elements in the application form
+            const applyLearnerBtn = document.getElementsByName("applyBtn")[0];
+
+            const pickup = document.getElementsByName("pickup")[0];
+            const dropoff = document.getElementsByName("dropoff")[0];
+
+            if (pickup && dropoff & applyLearnerBtn)
+            {
+                applyLearnerBtn.disabled = true;
+                 // Add event listeners that listen for a change in value on the pickup selects
+                pickup.addEventListener("input", () => {
+                    // Compare the number in the zeroth index in the pickup's value to the one in dropoff
+                    // If equal, the selected options in both are on the same route and the submit button should be enabled
+                    // Otherwise it should be disabled
+                    let otherVal = (document.querySelector("select[name=dropoff]")).value.substring(0,1);
+                    let curVal = pickup.value.substring(0,1);
+                    if (curVal != otherVal)
+                    {
+                        applyLearnerBtn.disabled = true;
+                    }
+                    else
+                    {
+                        applyLearnerBtn.disabled = false;
+                    }
+                });
+
+            // Add event listeners that listen for a change in value on the dropoff selects
+            dropoff.addEventListener("input", () => {
+                    // Compare the number in the zeroth index in the dropoff's value to the one in pickup
+                    // If equal, the selected options in both are on the same route and the submit button should be enabled
+                    // Otherwise it should be disabled
+                    let otherVal = (document.querySelector("select[name=pickup]")).value.substring(0,1);
+                    let curVal = pickup.value.substring(0,1);
+                    if (curVal != otherVal)
+                    {
+                        applyLearnerBtn.disabled = true;
+                    }
+                    
+                    if (curVal == otherVal)
+                    {
+                        applyLearnerBtn.disabled = false;
+                    }
+                });
+
+                const cancelBtns = document.getElementsByName("cancelBtn");
+
+                // if cancelBtns are defined, add an event listener
+                if (cancelBtns)
+                {
+                    // when clicked, send a fetch GET to index.php to delete the application
+                    if (cancelBtns) {
+                        cancelBtns.forEach((elem) => {
+                            elem.addEventListener("pointerdown", () => {
+                                fetch(`../index.php?action=cancel_app_admin&id=${elem.value}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        window.location.reload();
+                                    })
+                                    .catch(error => console.log(error));
+                            });
+                        });
+                    }
+                }
+            }
+    
+
     }
