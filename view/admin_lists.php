@@ -34,6 +34,7 @@
                     Apply for a learner below. NB: Please select points that are on the same route. E.g. Select 1A and 1B of Rooihuiskraal.
                  </div>
 
+                 <!-- Apply for a Learner section -->
                  <div class="learner_section" id="applyLearner">
                     <!-- Apply for a learner as admin here -->
                         <form method="POST" id="apply_learner" class="form_move text-bg-primary">
@@ -83,6 +84,7 @@
                         </form>
                  </div>
 
+                 <!-- Waiting List section -->
                  <div class="learner_section" id="waitingList">
 
                     <div class="mb-3 table-responsive">
@@ -91,7 +93,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Learner Name</th>
-                                                <th>Status</th>
+                                                <th colspan="2">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody id="wait_list">
@@ -101,8 +103,14 @@
                                                     <tr>
                                                         <td name="fullName"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
                                                         <td>
-                                                            <button class="btn btn-danger" value="<?php echo $learners[$i]['id'] ?>" name="cancelBtn">Cancel Application</button>
-                                                            <button class="btn btn-warning" value="<?php echo $learners[$i]['id'] ?>" name="moveBtn">Move To Passenger List</button>
+                                                            <button class="btn btn-danger" value="<?php echo $learners[$i]['id'] ?>" name="cancelAppBtn">Cancel Application</button>
+                                                        </td>
+                                                        <td>
+                                                                <form method="POST">
+                                                                    <input hidden name="action" value="move_to_trips"/>
+                                                                    <input hidden name="l_id" value="<?php echo $learners[$i]['id'] ?>"/>
+                                                                    <button class="btn btn-warning" name="moveBtn">Move To Passenger List</button>
+                                                                </form>
                                                         </td>
                                                     </tr>
                                                     <?php endif; ?>
@@ -113,6 +121,7 @@
                  </div>
                  </div>
 
+                 <!-- Passenger List (learner_trips table) -->
                  <div class="learner_section" id="passengerList">
                     <div class="mb-3 table-responsive">
                                     <!-- Passenger List table here -->
@@ -130,7 +139,7 @@
                                             <tbody id="pass_list">
                                                 <?php for ($i = 0; $i < count($learners); $i++): ?>
                                                     <?php if (checkLearnerPassengerStatus($learners[$i]['id'])) : ?>
-                                                        <?php $info = getPassengerInfo($learners[$i]['id']) ?>
+                                                        <?php $info = getPassengerInfo($learners[$i]["id"]); ?>
                                                         <tr>
                                                             <td name="fullName"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
                                                             <td name="p1_point_name"><?php echo $info["p1_name"] ?></td>
@@ -138,10 +147,14 @@
                                                             <td name="p2_point_name"><?php echo $info["p2_name"] ?></td>
                                                             <td name="p2_dropoff_time"><?php echo $info["p2_time"] ?></td>
                                                             <td>
-                                                                <button class="btn btn-danger" value="<?php echo $info['id'] ?>" name="cancelWaitBtn">Remove From List</button>
+                                                                <button class="btn btn-danger" value="<?php echo $info['id'] ?>" name="cancelPassBtn">Remove From List</button>
                                                             </td>
                                                             <td>
-                                                                <button class="btn btn-success" value="<?php echo $learners[$i]['id'] ?>" name="emailBtn">Email Trip To Parent</button>
+                                                                <form method="POST">
+                                                                    <input hidden name="action" value="send_trip_info"/>
+                                                                    <input hidden name="l_id" value="<?php echo $learners[$i]['id'] ?>"/>
+                                                                    <button class="btn btn-success" type="submit" name="emailBtn">Email Trip To Parent</button>
+                                                                </form>
                                                             </td>
                                                         </tr>
                                                     <?php endif; ?>
@@ -149,7 +162,7 @@
                                             </tbody>
                                     </table>
                     </div>
-                 </div>
+                </div>
             </main> 
             
         </div>

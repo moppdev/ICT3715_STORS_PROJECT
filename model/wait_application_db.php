@@ -1,6 +1,30 @@
 <?php
     // Model for the waiting list and applications tables
 
+    // Remove a learner from learner_trips
+    function removeTrip($id)
+    {
+        global $db;
+        $query = "DELETE FROM learner_trips WHERE learner_id = :learner_id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(":learner_id", $id);
+        $statement->execute();
+    }
+
+    // Transfer application to learner_trips
+    function moveAppToTrip($id)
+    {
+        global $db;
+        $query = "SELECT pickup_id, dropoff_id FROM applications WHERE learner_id = :id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $points = $statement->fetch();
+        $statement->closeCursor();
+
+       
+    }
+
     // Check a learner's application status
     function checkLearnerApplyStatus($id)
     {
@@ -55,7 +79,6 @@
         INNER JOIN route_points AS t2 on t2.point_num = learner_trips.dropoff_id WHERE learner_id = :id";
         $statement = $db->prepare($query);
         $statement->bindValue(":id", $id);
-        $statement->execute();
         $result = $statement->fetch();
         $statement->closeCursor();
         return $result;

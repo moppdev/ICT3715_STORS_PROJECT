@@ -71,7 +71,7 @@
                             <label for="parent">Parent:</label>
 
                             <!-- searcher for parents -->
-                            <input type="text" name="searcher" placeholder=" Search for a learner here" class="form-control"/>
+                            <input type="text" name="searcher" placeholder=" Search for a parent here" class="form-control"/>
                                 <!-- Dropdown to hold parents -->
                                 <div id="parentDropdown" class="dropdown-menu show mt-1" style="max-height: 200px; overflow-y: auto;">
                                     <!-- The options will be dynamically filtered and shown here -->

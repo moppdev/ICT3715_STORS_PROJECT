@@ -327,6 +327,61 @@
 
             exit();
         break;
+        case "remove_trip":
+            // Remove a learner from learner_trips
+            // get input
+            $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
+            // Remove learner and send json response
+            removeTrip($id);
+
+            echo json_encode(['success' => true]);
+
+            exit();
+        break;  
+        case "move_to_trips":
+            // Move a learner to the trips list
+            // get input
+            $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
+            // Move learner, remove from waiting list and applications
+            moveAppToTrip($id);
+        break;
+        case "send_trip_info":
+            // Send email with trip info to parent
+            // get input
+            $l_id = filter_input(INPUT_POST, "l_id");
+            
+            // Get trip info and parent
+            $info = getPassengerInfo($l_id);
+            $parent_id = get_parent_id($l_id);
+            $parent_info = get_parent_info($parent_id);
+            $to_name = $parent_info["name"];
+            $to = $parent_info["email"];
+            $name = $learners[$l_id]["name"];
+            $p1_name =  $info["p1_name"];
+            $p1_time =  $info["p1_time"];
+            $p2_name =  $info["p2_name"];
+            $p2_time =  $info["p2_time"];
+
+            // body
+            $body = "Dear $to_name, <br><br> Here is the trip information for $name: <br><br>
+                <b>Pickup Point and Time</b>: $p1_name at $p1_time<br>
+                <b>Dropoff Point and Time</b>: $p2_name at $p2_time<br>
+                <br>
+                Kind Regards<br>
+                Strive High
+            ";
+            $alt = "Dear $to_name, \n\n Here is the trip information for $name: \n\n
+                PICKUP Point and Time: $p1_name at $p1_time\n
+                DROPOFF Point and Time: $p2_name at $p2_time\n
+                \n
+                Kind Regards\n
+                Strive High
+            ";
+
+            send_mail("STORS Trip Info For $to_name", $body, $alt, $to, $to_name);
+        break;
         case "sign_out":
             // Sign out
             // Destroy session

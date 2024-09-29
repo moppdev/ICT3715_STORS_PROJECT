@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selectStyling();
     parentSPAFunction();
     adminApplySPAFunction();
+    passengerListFuncs();
 
 });
 
@@ -825,7 +826,9 @@ document.addEventListener("DOMContentLoaded", () => {
          let parentDropdown = document.getElementById('parentDropdown');
          let parent = document.getElementById("parent");
 
-         // Add an input event listener to the searcher, convert the input to lowercase and search amongst the options
+         if (parentDropdown)
+        {
+            // Add an input event listener to the searcher, convert the input to lowercase and search amongst the options
             searcherTwo.addEventListener('input', function() {
                 const searchTerm = searcherTwo.value.toLowerCase();
                 const options = parentDropdown.getElementsByClassName('dropdown-item');
@@ -858,10 +861,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     parentDropdown.style.display = 'none';
                 }
             });
-
-            parentDropdown.addEventListener("focusout", () => {
-                parentDropdown.style.display = "none";
-            });
+        }
 
             // Allow the admin to search for a specific student to apply for
          let searcher = document.getElementsByName('searcher')[0];
@@ -903,10 +903,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     dropdown.style.display = 'none';
                 }
             });
-
-            dropdown.addEventListener("focusout", () => {
-                dropdown.style.display = "none";
-            });
         }
 
             // Get the elements in the application form
@@ -915,9 +911,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const pickup = document.getElementsByName("pickup")[0];
             const dropoff = document.getElementsByName("dropoff")[0];
 
-            if (pickup && dropoff & applyLearnerBtn)
+            if (pickup && dropoff && applyLearnerBtn)
             {
                 applyLearnerBtn.disabled = true;
+
                  // Add event listeners that listen for a change in value on the pickup selects
                 pickup.addEventListener("input", () => {
                     // Compare the number in the zeroth index in the pickup's value to the one in dropoff
@@ -925,11 +922,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Otherwise it should be disabled
                     let otherVal = (document.querySelector("select[name=dropoff]")).value.substring(0,1);
                     let curVal = pickup.value.substring(0,1);
-                    if (curVal != otherVal)
-                    {
-                        applyLearnerBtn.disabled = true;
-                    }
-                    else
+                    if ((curVal === otherVal))
                     {
                         applyLearnerBtn.disabled = false;
                     }
@@ -942,12 +935,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Otherwise it should be disabled
                     let otherVal = (document.querySelector("select[name=pickup]")).value.substring(0,1);
                     let curVal = pickup.value.substring(0,1);
-                    if (curVal != otherVal)
-                    {
-                        applyLearnerBtn.disabled = true;
-                    }
-                    
-                    if (curVal == otherVal)
+                    console.log(! (curVal != otherVal));
+                    if ((curVal === otherVal))
                     {
                         applyLearnerBtn.disabled = false;
                     }
@@ -974,5 +963,83 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
     
+            // Passenger list functions
+            passengerListFuncs();
 
+            // Waiting List functions
+            waitListFuncs();
+    }
+    
+    // Function that controls the events on the waiting list on an admin's page
+    function waitListFuncs()
+    {
+        const cancel = document.getElementsByName("cancelAppBtn");
+        const move = document.getElementsByName("moveBtn");
+
+        if (cancel)
+        {
+            cancel.forEach((elem) => {
+                elem.addEventListener("pointerdown", () => {
+                    fetch(`../index.php?action=cancel_app_admin&id=${elem.value}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.reload();
+                        })
+                        .catch(error => console.log(error));
+                });
+            })
+        }
+
+        if (move)
+        {
+            move.forEach((elem) => {
+                elem.addEventListener("pointerdown", () => {
+                    console.log("GOOD MORNING");
+                    // fetch(`../index.php?action=move_to_trips&id=${elem.value}`)
+                    // .then(response => {
+                    //     console.log(response.text());
+                    // })
+                    // .then(data => {
+                    //     if (data["success"])
+                    //     {
+                    //         window.location.reload();
+                    //     }
+                    //     else
+                    //     {
+                    //         alert(data["reason"]);
+                    //     }
+                    // })
+                    // .catch(error => console.log(error));
+                });
+            });
+        }
+    }
+
+    // Function that moves a learner to the passenger list
+    function passengerListFuncs()
+    {
+        // get the buttons from the passenger list
+        const removeBtn = document.getElementsByName("cancelPassBtn");
+
+        if (removeBtn)
+        {
+            removeBtn.forEach((elem) => {
+                
+                elem.addEventListener("pointerdown", () => {
+                    fetch(`../index.php?action=remove_trip&id=${elem.value}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data["success"])
+                        {
+                            window.location.reload();
+                        }
+                        else
+                        {
+                            alert("Couldn't remove trip.");
+                        }
+                    })
+                    .catch(error => console.log(error));
+                });
+            });
+        }
     }
