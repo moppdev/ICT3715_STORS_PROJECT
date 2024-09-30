@@ -43,7 +43,7 @@
         $query = "SELECT * FROM learners ORDER BY surname";
         $statement = $db->prepare($query);
         $statement->execute();
-        $result = $statement->fetchAll();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $statement->closeCursor();
         return $result;
     }
@@ -56,7 +56,7 @@
             $statement = $db->prepare($query);
             $statement->bindValue(":p_id", $_SESSION["user_id"]);
             $statement->execute();
-            $result = $statement->fetchAll();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
     }
 

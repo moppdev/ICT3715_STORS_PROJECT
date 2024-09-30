@@ -66,34 +66,21 @@
         $statement->bindValue(":parent_id", $parent_id);
         $statement->execute();
         $learner_ids = $statement->fetchAll();
-        $learner_ids = implode(',', $learner_ids);
+        $id_array = array();
+        foreach ($learner_ids as $id)
+        {
+            foreach ($id as $elem)
+            {
+                $id_array[] = $elem;
+            }
+        }
         $statement->closeCursor();
 
-        if (!empty($learner_ids)) {
-            $query = "DELETE FROM learner_trips WHERE learner_id IN (:ids)";
-            $statement = $db->prepare($query);
-            $statement->bindValue(":ids", $learner_ids);
-            $statement->execute();
-            $statement->closeCursor();
-    
-            $query = "DELETE FROM applications WHERE learner_id IN (:ids)";
-            $statement = $db->prepare($query);
-            $statement->bindValue(":ids", $learner_ids);
-            $statement->execute();
-            $statement->closeCursor();
-    
-            $query = "DELETE FROM waiting_list WHERE learner_id IN (:ids)";
-            $statement = $db->prepare($query);
-            $statement->bindValue(":ids", $learner_ids);
-            $statement->execute();
-            $statement->closeCursor();
-    
-            $query = "DELETE FROM learners WHERE id IN (:ids)";
-            $statement = $db->prepare($query);
-            $statement->bindValue(":ids", $learner_ids);
-            $statement->execute();
-            $statement->closeCursor();
-        }
+        $placeholders = implode(',', array_fill(0, count($id_array), '?'));
+        $query = "DELETE FROM learners WHERE id IN ($placeholders)";
+        $statement = $db->prepare($query);
+        $statement->execute($id_array);
+        $statement->closeCursor();
     
             $query = "DELETE FROM relations WHERE parent_id = :parent_id";
             $statement = $db->prepare($query);
@@ -118,11 +105,11 @@
     function get_parent_info($p_id)
     {
         global $db;
-        $query = "SELECT name, surname, email FROM parents WHERE id = :id ";
+        $query = "SELECT name, surname, email FROM parents WHERE id = :id LIMIT 1";
         $statement = $db->prepare($query);
         $statement->bindValue(":id", $p_id);
         $statement->execute();
-        $result = $statement->fetch();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         $statement->closeCursor();
         return $result;
     }

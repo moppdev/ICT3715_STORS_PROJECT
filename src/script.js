@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     selectStyling();
     parentSPAFunction();
     adminApplySPAFunction();
-    passengerListFuncs();
 
 });
 
@@ -942,39 +941,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 });
 
-                const cancelBtns = document.getElementsByName("cancelBtn");
-
-                // if cancelBtns are defined, add an event listener
-                if (cancelBtns)
-                {
-                    // when clicked, send a fetch GET to index.php to delete the application
-                    if (cancelBtns) {
-                        cancelBtns.forEach((elem) => {
-                            elem.addEventListener("pointerdown", () => {
-                                fetch(`../index.php?action=cancel_app_admin&id=${elem.value}`)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        window.location.reload();
-                                    })
-                                    .catch(error => console.log(error));
-                            });
-                        });
-                    }
-                }
-            }
-    
-            // Passenger list functions
-            passengerListFuncs();
-
             // Waiting List functions
             waitListFuncs();
     }
+}
     
     // Function that controls the events on the waiting list on an admin's page
     function waitListFuncs()
     {
         const cancel = document.getElementsByName("cancelAppBtn");
-        const move = document.getElementsByName("moveBtn");
 
         if (cancel)
         {
@@ -988,58 +963,5 @@ document.addEventListener("DOMContentLoaded", () => {
                         .catch(error => console.log(error));
                 });
             })
-        }
-
-        if (move)
-        {
-            move.forEach((elem) => {
-                elem.addEventListener("pointerdown", () => {
-                    console.log("GOOD MORNING");
-                    // fetch(`../index.php?action=move_to_trips&id=${elem.value}`)
-                    // .then(response => {
-                    //     console.log(response.text());
-                    // })
-                    // .then(data => {
-                    //     if (data["success"])
-                    //     {
-                    //         window.location.reload();
-                    //     }
-                    //     else
-                    //     {
-                    //         alert(data["reason"]);
-                    //     }
-                    // })
-                    // .catch(error => console.log(error));
-                });
-            });
-        }
-    }
-
-    // Function that moves a learner to the passenger list
-    function passengerListFuncs()
-    {
-        // get the buttons from the passenger list
-        const removeBtn = document.getElementsByName("cancelPassBtn");
-
-        if (removeBtn)
-        {
-            removeBtn.forEach((elem) => {
-                
-                elem.addEventListener("pointerdown", () => {
-                    fetch(`../index.php?action=remove_trip&id=${elem.value}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data["success"])
-                        {
-                            window.location.reload();
-                        }
-                        else
-                        {
-                            alert("Couldn't remove trip.");
-                        }
-                    })
-                    .catch(error => console.log(error));
-                });
-            });
         }
     }

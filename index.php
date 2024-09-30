@@ -1,4 +1,6 @@
 <?php 
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
     // Index file for STORS
     // Create session
     session_start();
@@ -203,7 +205,7 @@
         break;
         case "remove_parent":
             // Remove a parent from the system
-            $id = filter_input(INPUT_POST, "selected_parent", FILTER_VALIDATE_INT);
+            $id = filter_input(INPUT_POST, "selected_parent");
 
             // Parent info
             $cur_parent = get_parent_info($id);
@@ -218,7 +220,6 @@
             <br> Kind Regards <br> Strive High", 
             "Dear $name, your account and all related information has been deleted. \nKind Regards \nStrive High", $email, $name);
 
-            header("Location: home.php");
             exit();
         break;
         case "admin_login":
@@ -319,42 +320,72 @@
         case "cancel_app_admin":
             // Cancel an application for learner via admin
             // get input
-            $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+            $id = filter_input(INPUT_POST, "l_id", FILTER_VALIDATE_INT);
 
             // Cancel application and send json response
             cancelApplication($id);
-            echo json_encode(['success' => true]);
+            
+            // Get parent details
+            $info = get_parent_id($id);
+            $parent = get_parent_info($info["parent_id"]);
+
+            // Send email notification to parent
+            $name = $parent['name'];
+            $email = $parent['email'];
+
+            send_mail("STORS Application Cancellation Notification" , "<b>Dear $name</b>, <br><br> your application for one of your learners has been cancelled. <br><br> Kind Regards <br> Strive High", 
+            "Dear $name, your application for one of your learners has been cancelled. Kind Regards Strive High", $email, $name);
 
             exit();
         break;
         case "remove_trip":
             // Remove a learner from learner_trips
             // get input
-            $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+            $id = filter_input(INPUT_POST, "t_id", FILTER_VALIDATE_INT);
 
             // Remove learner and send json response
             removeTrip($id);
 
-            echo json_encode(['success' => true]);
-
+            header("Location: admin_lists.php");
+            
             exit();
         break;  
         case "move_to_trips":
             // Move a learner to the trips list
             // get input
-            $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+            $id = filter_input(INPUT_POST, "l_id", FILTER_VALIDATE_INT);
 
             // Move learner, remove from waiting list and applications
-            moveAppToTrip($id);
+            $result = move_app_to_trip($id);
+
+            if ($result === true)
+            {
+                // Get parent details
+                $info = get_parent_id($id);
+                $parent = get_parent_info($info["parent_id"]);
+
+                // Send email notification to parent
+                $name = $parent['name'];
+                $email = $parent['email'];
+
+                send_mail("STORS Trip Notification", 
+                    "<b>Dear $name</b>,<br><br>One of your children has been made a passenger. An admin will send an email with the details shortly.<br><br>Kind Regards,<br>Strive High", 
+                    "Dear $name,\n\nOne of your children has been made a passenger. An admin will send an email with the details shortly.\n\nKind Regards,\nStrive High", 
+                    $email, $name);
+            }
+            else
+            {
+                $error = "An error has occured. Limit has been reached for this specific route.";
+            }
         break;
         case "send_trip_info":
             // Send email with trip info to parent
             // get input
-            $l_id = filter_input(INPUT_POST, "l_id");
-            
+            $l_id = filter_input(INPUT_POST, "l_id", FILTER_VALIDATE_INT);
+
             // Get trip info and parent
             $info = getPassengerInfo($l_id);
-            $parent_id = get_parent_id($l_id);
+            $parent_id = get_parent_id($l_id)["parent_id"];
             $parent_info = get_parent_info($parent_id);
             $to_name = $parent_info["name"];
             $to = $parent_info["email"];
@@ -372,6 +403,7 @@
                 Kind Regards<br>
                 Strive High
             ";
+            // alt
             $alt = "Dear $to_name, \n\n Here is the trip information for $name: \n\n
                 PICKUP Point and Time: $p1_name at $p1_time\n
                 DROPOFF Point and Time: $p2_name at $p2_time\n
@@ -380,6 +412,7 @@
                 Strive High
             ";
 
+            // send mail
             send_mail("STORS Trip Info For $to_name", $body, $alt, $to, $to_name);
         break;
         case "sign_out":

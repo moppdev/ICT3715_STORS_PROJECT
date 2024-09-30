@@ -86,39 +86,46 @@
 
                  <!-- Waiting List section -->
                  <div class="learner_section" id="waitingList">
+                 <?php if (!empty($error)) :?>
+                        <p><?php echo $error ?></p>
+                <?php endif; ?>
 
-                    <div class="mb-3 table-responsive">
-                                <!-- Waiting List table here -->
-                                <table class="table table-primary table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Learner Name</th>
-                                                <th colspan="2">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="wait_list">
-                                            <?php for ($i = 0; $i < count($learners); $i++): ?>
-                                                <?php if (checkLearnerPassengerStatus($learners[$i]["id"]) === false) : ?>
-                                                    <?php if (checkLearnerApplyStatus($learners[$i]["id"]) === true): ?>
-                                                    <tr>
-                                                        <td name="fullName"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
-                                                        <td>
-                                                            <button class="btn btn-danger" value="<?php echo $learners[$i]['id'] ?>" name="cancelAppBtn">Cancel Application</button>
-                                                        </td>
-                                                        <td>
-                                                                <form method="POST">
-                                                                    <input hidden name="action" value="move_to_trips"/>
-                                                                    <input hidden name="l_id" value="<?php echo $learners[$i]['id'] ?>"/>
-                                                                    <button class="btn btn-warning" name="moveBtn">Move To Passenger List</button>
-                                                                </form>
-                                                        </td>
-                                                    </tr>
+                        <div class="mb-3 table-responsive">
+                                    <!-- Waiting List table here -->
+                                    <table class="table table-primary table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Learner Name</th>
+                                                    <th colspan="2">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="wait_list">
+                                                <?php for ($i = 0; $i < count($learners); $i++): ?>
+                                                    <?php if (checkLearnerPassengerStatus($learners[$i]["id"]) === false) : ?>
+                                                        <?php if (checkLearnerApplyStatus($learners[$i]["id"]) === true): ?>
+                                                        <tr>
+                                                            <td name="fullName"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
+                                                            <td>
+                                                                    <form method="POST">
+                                                                        <input hidden name="action" value="cancel_app_admin"/>
+                                                                        <input hidden name="l_id" value="<?php echo $learners[$i]['id'] ?>"/>
+                                                                        <button class="btn btn-danger" name="cancelAppBtn">Cancel Application</button>
+                                                                    </form>
+                                                            </td>
+                                                            <td>
+                                                                    <form method="POST">
+                                                                        <input hidden name="action" value="move_to_trips"/>
+                                                                        <input hidden name="l_id" value="<?php echo $learners[$i]['id'] ?>"/>
+                                                                        <button class="btn btn-warning" name="moveBtn">Move To Passenger List</button>
+                                                                    </form>
+                                                            </td>
+                                                        </tr>
+                                                        <?php endif; ?>
                                                     <?php endif; ?>
-                                                <?php endif; ?>
-                                            <?php endfor; ?>
-                                        </tbody>
-                                </table>
-                 </div>
+                                                <?php endfor; ?>
+                                            </tbody>
+                                    </table>
+                    </div>
                  </div>
 
                  <!-- Passenger List (learner_trips table) -->
@@ -139,7 +146,7 @@
                                             <tbody id="pass_list">
                                                 <?php for ($i = 0; $i < count($learners); $i++): ?>
                                                     <?php if (checkLearnerPassengerStatus($learners[$i]['id'])) : ?>
-                                                        <?php $info = getPassengerInfo($learners[$i]["id"]); ?>
+                                                        <?php $info = getPassengerInfo($learners[$i]['id']); ?>
                                                         <tr>
                                                             <td name="fullName"><?php echo $learners[$i]["name"] . " " . $learners[$i]["surname"] ?></td>
                                                             <td name="p1_point_name"><?php echo $info["p1_name"] ?></td>
@@ -147,7 +154,11 @@
                                                             <td name="p2_point_name"><?php echo $info["p2_name"] ?></td>
                                                             <td name="p2_dropoff_time"><?php echo $info["p2_time"] ?></td>
                                                             <td>
-                                                                <button class="btn btn-danger" value="<?php echo $info['id'] ?>" name="cancelPassBtn">Remove From List</button>
+                                                                <form method="POST">
+                                                                    <input hidden name="action" value="remove_trip"/>
+                                                                    <input hidden name="t_id" value="<?php echo $info['id'] ?>"/>
+                                                                    <button class="btn btn-danger" type="submit" name="emailBtn">Remove From List</button>
+                                                                </form>
                                                             </td>
                                                             <td>
                                                                 <form method="POST">
