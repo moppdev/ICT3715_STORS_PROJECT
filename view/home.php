@@ -49,8 +49,24 @@
                     <?php else: ?>
                         <h2>Welcome, Administrator <?php echo $_SESSION["user_info"]["initials"] . " " . $_SESSION["user_info"]["surname"] ?></h2>
 
+                        <h3>MIS Reports</h3>
+
                         <!-- Admin MIS Reports here -->
+                        <div id="route_amt_MIS">
+                            <canvas id="route_chart"></canvas>
+                         </div>
                          
+                         <div id="parent_details_MIS">
+                            
+                         </div>
+
+                         <div id="waiting_list_MIS">
+                            
+                         </div>
+
+                         <div>
+
+                         </div>
                     <?php endif; ?>
                 <?php else: ?>    
                     <h2>Welcome to the Strive Transport Registration System (STORS)!</h2>

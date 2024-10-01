@@ -421,5 +421,46 @@
             header("Location: view/home.php");
             exit();
         break;
+        case "mis_info":
+            // Return necessary MIS query results for charts on Admin homepage
+            // Get input
+            $value = filter_input(INPUT_GET, "query");
+
+            // Check input according to values in the cases to determine which MIS query must be used
+            switch ($value)
+            {
+                case "parent":
+                    $result = parentDetails();
+                break;
+                case "wait":
+                    $result = currentWaitingList();
+                break;
+                case "route":
+                    $time = date("H:i");
+                    if ($time >= "12:00")
+                    {
+                        $result = routeAmounts("morning");
+                    }
+                    else if ($time <= "12:00")
+                    {
+                        $result = routeAmounts("afternoon");
+                    }
+                break;
+                case "overview":
+                    $time = date("H:i");
+                    if ($time >= "12:00")
+                    {
+                        $result = overviewMIS("morning");
+                    }
+                    else if ($time <= "12:00")
+                    {
+                        $result = overviewMIS("afternoon");
+                    }
+                break;
+            }
+
+            // Return appropriate JSON to mis_charting.js
+            echo json_encode(["result" => $result]);
+        break;
     }
 ?>
