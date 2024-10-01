@@ -50,6 +50,7 @@
                         <h2>Welcome, Administrator <?php echo $_SESSION["user_info"]["initials"] . " " . $_SESSION["user_info"]["surname"] ?></h2>
 
                         <!-- Admin MIS Reports here -->
+                         
                     <?php endif; ?>
                 <?php else: ?>    
                     <h2>Welcome to the Strive Transport Registration System (STORS)!</h2>

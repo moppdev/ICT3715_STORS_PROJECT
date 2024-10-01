@@ -18,7 +18,7 @@
         <main class="mb-3">
 
             <hr>
-            <div>
+            <div class="button_holder">
                 <p>Get started by clicking one of the three buttons below!</p>
                 <p>P.S Be mindul of good password practices when creating passwords.</p>
 

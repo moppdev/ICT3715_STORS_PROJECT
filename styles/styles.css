@@ -83,6 +83,10 @@ html, body {
     margin-top: 3em;
 }
 
+.footer > div {
+    margin: 0.55em;
+}
+
 .container {
     margin-top: 2em;
     animation-name: fading;
@@ -106,9 +110,19 @@ html, body {
         text-align: center;
         padding: 0.5em;
     }
+
+    .button_holder > button {
+        display: block;
+        margin-top: 0.6em;
+    }
+    .form_move {
+        margin: 1em 0.3em;
+    }
 }
 
+/* Bigger Mobile and some tablets */
 @media (min-width: 517px) and (max-width: 767px){
+
     .footer {
         position: relative;
         bottom: 0;
@@ -117,9 +131,12 @@ html, body {
         text-align: center;
         padding: 0.5em;
     }
-}
 
-/* Tablet */
-@media (min-width: 768px) and (max-width: 1024px) {
-
+    .button_holder > button {
+        display: block;
+        margin-top: 0.6em;
+    }
+    .form_move {
+        margin: 1em 0.3em;
+    }
 }

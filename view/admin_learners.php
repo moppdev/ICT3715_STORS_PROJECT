@@ -18,7 +18,7 @@
         <main class="mb-3">
 
                 <hr>
-                <div>
+                <div class="button_holder">
                     <p>Get started by clicking one of the three buttons below!</p>
 
                     <!-- Buttons to toggle fragment used/shown -->

@@ -808,14 +808,14 @@ document.addEventListener("DOMContentLoaded", () => {
                  subtitle.textContent = "Manage the waiting list below.";
              });
              passBtn.addEventListener("click", () => {
-                 title.textContent = "Passenger Lists";
+                 title.textContent = "Passenger List";
                  applyBtn.className = "btn btn-secondary";
                  waitBtn.className = "btn btn-secondary";
                  passBtn.className = "btn btn-primary";
                  applyLearner.style.display = "none";
                  waitingList.style.display = "none";
                  passList.style.display = "block";
-                 subtitle.textContent = "Manage the passenger lists below";
+                 subtitle.textContent = "Manage the passenger list below";
              });
          }
 
