@@ -52,20 +52,61 @@
                         <h3>MIS Reports</h3>
 
                         <!-- Admin MIS Reports here -->
-                        <div id="route_amt_MIS">
+                        <div id="route_amt_MIS" class="mis">
+                            <h4>Passenger Count Per Route</h4>
                             <canvas id="route_chart"></canvas>
                          </div>
                          
-                         <div id="parent_details_MIS">
-                            
+                         <div id="parent_details_MIS" class="mis">
+                                <h4>Parent Contact Details</h4>
+                                <table class="table table-primary table-striped table-bordered table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Learner Name</th>
+                                            <th>Grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="parent_target">
+                                        
+                                    </tbody>
+                                </table>
                          </div>
 
-                         <div id="waiting_list_MIS">
-                            
+                         <div id="waiting_list_MIS" class="mis table_responsive">
+                            <h4>Current Waiting List</h4>
+                                <table class="table table-primary table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Learner Name</th>
+                                            <th>Grade</th>
+                                            <th>Pickup ID</th>
+                                            <th>Dropoff ID</th>
+                                            <th>Cellphone Number</th>
+                                            <th>Date Added</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="wait_target">
+                                        
+                                    </tbody>
+                                </table>
                          </div>
 
-                         <div>
-
+                         <div class="mis" id="current_overview_MIS">
+                                <h4>Current Trip Overview</h4>
+                                <table class="table table-primary table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Learner Name</th>
+                                            <th>Route Name</th>
+                                            <th>Point Name</th>
+                                            <th>Point ID</th>
+                                            <th>Departure Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="overview_target">
+                                        
+                                    </tbody>
+                                </table>
                          </div>
                     <?php endif; ?>
                 <?php else: ?>    

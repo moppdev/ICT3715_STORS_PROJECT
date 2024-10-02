@@ -8,6 +8,13 @@ html, body {
     width: 100%;
 }
 
+.mis {
+    margin-bottom: 5em;
+    margin-top: 2em;
+    border: solid 0.2em black;
+    padding: 1.2em;
+}
+
 #learnerDropdown {
     display: none;
 }

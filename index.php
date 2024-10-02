@@ -439,22 +439,22 @@
                     $time = date("H:i");
                     if ($time >= "12:00")
                     {
-                        $result = routeAmounts("morning");
+                        $result = routeAmounts("afternoon");
                     }
                     else if ($time <= "12:00")
                     {
-                        $result = routeAmounts("afternoon");
+                        $result = routeAmounts("morning");
                     }
                 break;
                 case "overview":
                     $time = date("H:i");
                     if ($time >= "12:00")
                     {
-                        $result = overviewMIS("morning");
+                        $result = overviewMIS("afternoon");
                     }
                     else if ($time <= "12:00")
                     {
-                        $result = overviewMIS("afternoon");
+                        $result = overviewMIS("morning");
                     }
                 break;
             }
